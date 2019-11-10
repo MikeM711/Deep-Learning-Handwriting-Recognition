@@ -1,0 +1,9 @@
+div.p5-canvas {
+    background:blue;
+    float:left;
+}
+
+div.canvas {
+    padding-top:10px;
+    padding-left: 100px
+}
