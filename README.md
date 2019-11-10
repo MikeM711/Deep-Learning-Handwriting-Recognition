@@ -1,68 +1,60 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Handwriting Recognition
 
-## Available Scripts
+A Python and TensorFlow/Django backend with a React frontend to read handwriting
 
-In the project directory, you can run:
+### Currently
 
-### `yarn start`
+Working on the frontend
+- Created a canvas using p5
+- We are able to get X and Y coordinates on mouse down, we stop getting coordinates when mouse is up, we don't get any coordinates if mouse is not on canvas
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+No backend as of yet
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `yarn test`
+### Todos
+The first goal: recognize the letters 'a', 'b', and 'c'
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Frontend
+1. Be able to draw on the canvas with coordinates received (in white)
+2. Be able to read that drawing in React (assuming in the form of pixels? we'll see) upon submit
 
-### `yarn build`
+Create the testing samples
+3. Once we are able to read the data, we will create tons of 'a', 'b', and 'c' letters to train our model with. Have an appropriate file structure for the data to make it easy to gather
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create standalone Python/Tensorflow files
+4. Py data file - Create the dataset (use pickle)
+5. Py train file - Create a model for the dataset - find the best one, pay close attention to val_loss (Tensorboard)
+6. Py predict file - Test out a couple of your own samples -  just to make sure model.predict() works as intended. This is what will be used in production. 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Backend
+7. First make sure I can have React talk to Django (because I've never done this before), and vice-versa
+8. Test out some calls - more than likely we'll be using postman, and then try it with React
+9. Hook up Python and Django together for the complete backend endpoint
+10. Test out some calls again
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Back to frontend
+11. Have React receive the call back from Django and output that in some `Result` section of the frontend
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Future:
+- Be able to read all lowercase a-z (one input in the canvas)
+  - Will need samples of all of these lowercase letters, of course
+- Be able to read all uppercase A-Z
+- Be able to read full words/sentences, plan below:
+  - "chop" up every single letter in the canvas
+  	- We could say one "chop" happens when we have a good amount of black pixel space between 2 drawn lines (letters)
+  	- Caveat: we should not allow letters to interfere with other letters' vertical space (ie: writing "hey" - we should not allow the 'y' to end up under the 'e' so that this algorithm can work properly)
+  	- A giant amount of black pixel space indicates a space
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Extras
+- Giving the user more "canvas" space if they perfer so
+  - We would do this by allowing the page to scroll left and right
+- Giving the user some sort of "undo" function
+  - We could do that by eliminating data in React state!
+- If we are doing "chops", we will probably need to normalize the data so that all images are the same size
+  - Maybe we would pad the images with black space?
+- using 'o' vs 'O' - I'm thinking we would get a reference of the height of all letters that are being handwritten and adjust the letter going into the model accordingly
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Initialization
+- Be sure to download p5 directly [from the p5 site](https://p5js.org/download/) and drop it in `node_modules` manually
