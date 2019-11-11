@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import sketch from './sketch';
-// import SketchClass from './sketchClass'
 import P5Wrapper from 'react-p5-wrapper';
 
 import './Canvas.css';
@@ -10,53 +8,49 @@ class Canvas extends Component {
 		super(props);
 		this.state = {
 			drawing: [],
-			stateSketch: sketch,
-			isDrawing: false
 		};
+		this.sketch = this.sketch.bind(this);
 	}
 
-	onMouseDownHandle = (event) => {
-		this.setState({
-			isDrawing: true
-		})
-		console.log('mouse down', event)
-		console.log(event.pageX)
-	}
+	// sketch function
+	sketch = (p) => {
+		let canvas;
+		let drawing = [];
+		p.setup = () => {
+			canvas = p.createCanvas(200, 200);
+			p.noStroke();
+		}
 
-	onMouseUpHandle = (event) => {
-		this.setState({
-			isDrawing: false
-		})
-	}
+		p.draw = () => {
+			p.background(0);
 
-	onMouseMoveHandle = (event) => {
-		if(this.state.isDrawing === true) {
-			console.log('X:', event.pageX)
-			console.log('Y:', event.pageY)
+			if (p.mouseIsPressed) {
+				var point = {
+					x: p.mouseX,
+					y: p.mouseY
+				}
+				drawing.push(point)
+			}
+
+			p.beginShape();
+			p.stroke(255);
+			p.strokeWeight(4);
+			p.noFill();
+			for (var i = 0; i < drawing.length; i++) {
+				p.vertex(drawing[i].x, drawing[i].y)
+			}
+			p.endShape();
 		}
 	}
 
 	render() {
 		return (
 			<div className="canvas">
-				<h4 className="center">canvas mine here</h4>
-					<br/>
-					<br/>
-					<br/>
-					<br/>
-				<div className="p5-canvas"
-					onMouseDown = {this.onMouseDownHandle}
-					onMouseMove = {this.onMouseMoveHandle}
-					onMouseUp = {this.onMouseUpHandle}
-					>
-
+				<h4 className="center">canvas here</h4>
+				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper"
-						sketch={this.state.stateSketch} 
-						drawing={this.state.drawing} 
-					/>
-
+						sketch={this.sketch}/>
 				</div>
-				
 			</div>
 		)
 	}
