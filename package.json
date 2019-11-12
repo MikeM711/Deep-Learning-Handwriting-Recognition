@@ -2,6 +2,10 @@
   "name": "handwriting-recognition",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.8.0",
+    "node": "8.11.1"
+  },
   "dependencies": {
     "p5": "^0.10.2",
     "react": "^16.11.0",
