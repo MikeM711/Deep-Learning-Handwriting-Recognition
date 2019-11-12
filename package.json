@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "p5": "^0.10.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-p5-wrapper": "^2.0.0",
