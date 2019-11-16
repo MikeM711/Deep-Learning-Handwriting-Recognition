@@ -5,13 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from django.views.generic import TemplateView
-from django.views.decorators.cache import never_cache
-
 # Create your views here.
-
-# Serve Single Page Application
-index = never_cache(TemplateView.as_view(template_name='index.html'))
 
 # @csrf_exempt
 # def index(request):
