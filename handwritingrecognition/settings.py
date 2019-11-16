@@ -26,7 +26,7 @@ SECRET_KEY = '_-di0$0&uf72a*@n_a6x=zzh+^%qv(j=umja0l-^&914_uu0vy'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['handwriting-recognition-py-js.herokuapp.com']
 
 
 # Application definition
