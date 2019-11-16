@@ -18,7 +18,7 @@ class Header extends Component {
 		e.preventDefault()
 		console.log(this.state.postreq, "sent to the backend!")
 		// From: http://127.0.0.1:8000/handwriting/test/'
-		var response = await axios.post('/handwriting/test/', {
+		var response = await axios.post('handwriting/', {
 			react_data: this.state.postreq
 		})
 		// console.log(response)

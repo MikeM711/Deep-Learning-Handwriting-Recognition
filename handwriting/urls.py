@@ -5,6 +5,5 @@ from . import views
 
 urlpatterns = [
     # path('', views.index, name='index'),
-    path('test/', views.data_return),
-    re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
+    path('', views.data_return),
 ]
