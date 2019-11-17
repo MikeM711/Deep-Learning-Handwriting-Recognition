@@ -18,6 +18,7 @@ whitenoise = "==4.1.4"
 Django = "==2.2.7"
 Pillow = "==6.2.1"
 matplotlib = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.6"

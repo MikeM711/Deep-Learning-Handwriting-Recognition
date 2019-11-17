@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from PIL import Image
 # import matplotlib.pyplot as plt
 import os
-import cv2
+from cv2 import *
 
 # Create your views here.
 
