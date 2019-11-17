@@ -4,6 +4,10 @@ from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
+from PIL import Image
+# import matplotlib.pyplot as plt
+import os
+import cv2
 
 # Create your views here.
 
@@ -15,8 +19,18 @@ from rest_framework.decorators import api_view
 @api_view(['POST']) # Yes this is very much needed!
 def data_return(request):
     print('hello')
-    if request.method == 'POST':
-        data_from_react = request.data['react_data']
-        #data_to_react = 'Django says: " ', data_from_react, '"'
-        data_to_react = 'Django says: "{}"'.format(data_from_react)
-    return HttpResponse(data_to_react)
+    # print(plt)
+    # filepath = 'testImage.png'
+    # img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
+    # print('img_array: ',img_array)
+    # im = Image.open('static/handwritingrecognition/testImage.png')
+    # print(im.size, im.width, im.height)
+    # im.show()
+    filepath = 'static/handwritingrecognition/testImage.png'
+    img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
+    print(img_array)
+    print('goodbye')
+    # if request.method == 'POST':
+        # data_from_react = request.data['react_data']
+        # data_to_react = 'Django says: "{}"'.format(data_from_react)
+    return HttpResponse(img_array)
