@@ -34,7 +34,9 @@ class Canvas extends Component {
 		const fd = new FormData()
 		fd.append('image', blob, 'someName');
 
-		var response = await axios.post('handwriting/', fd)
+		var response = await axios.post('handwriting/', {
+			react_data: "hello from react"
+		})
 		// console.log('response: ', response, {
 		// 	headers: {
 		// 		'content-type': 'multipart/form-data'

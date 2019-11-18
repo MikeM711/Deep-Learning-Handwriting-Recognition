@@ -26,6 +26,7 @@ def data_return(request):
     # im = Image.open('static/handwritingrecognition/testImage.png')
     # print(im.size, im.width, im.height)
     # im.show()
+    print('we got: {}'.format(request.data['react_data']))
     filepath = 'static/handwritingrecognition/testImage.png'
     img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
     print(img_array)
