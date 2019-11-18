@@ -16,15 +16,17 @@ class Header extends Component {
 	async handleSubmit(e) {
 		// send information to the backend
 		e.preventDefault()
-		console.log(this.state.postreq, "sent to the backend!")
-		// From: http://127.0.0.1:8000/handwriting/test/'
-		var response = await axios.post('handwriting/', {
-			react_data: this.state.postreq
-		})
-		// console.log(response)
-		this.setState({
-			postres: response.data
-		})
+		// uncomment the below if I want to do more testing with requests
+
+		// console.log(this.state.postreq, "sent to the backend!")
+		// // From: http://127.0.0.1:8000/handwriting/test/'
+		// var response = await axios.post('handwriting/', {
+		// 	react_data: this.state.postreq
+		// })
+		// // console.log(response)
+		// this.setState({
+		// 	postres: response.data
+		// })
 	}
 	
 	handleInputChange = e => {

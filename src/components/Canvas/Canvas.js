@@ -11,7 +11,8 @@ class Canvas extends Component {
 		super(props);
 		this.state = {
 			drawing: [],
-			submitted: false
+			submitted: false,
+			prediction: ''
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this)
@@ -34,13 +35,16 @@ class Canvas extends Component {
 		fd.append('image', blob, 'someName');
 
 		var response = await axios.post('handwriting/', fd)
-		console.log('response: ', response, {
-			headers: {
-				'content-type': 'multipart/form-data'
-			}
-		})
+		// console.log('response: ', response, {
+		// 	headers: {
+		// 		'content-type': 'multipart/form-data'
+		// 	}
+		// })
 
 		console.log('response: ', response)
+		this.setState({
+			prediction: response.data
+		})
 		// console.log('canvas id element', canvas)
 
 		// this function makes things super slow...
@@ -142,10 +146,8 @@ class Canvas extends Component {
 					className="btn waves-effect waves-light"
 					type="submit"
 					name="action"
-					onClick={this.handleOnClick}
-				>
-					Submit
-        </button>
+					onClick={this.handleOnClick}> Submit</button>
+				<p>Canvas Response: {this.state.prediction}</p>
 			</div>
 		);
 	}
