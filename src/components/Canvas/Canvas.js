@@ -22,20 +22,51 @@ class Canvas extends Component {
 	async fileUploadHandler(img) {
 		console.log('inside fileuploadhandler')
 		// console.log('hey we have the image', img)
-		// var canvas = document.getElementById('defaultCanvas0');
+		var canvasInput = document.getElementById('defaultCanvas0');
+		// var testImage = canvasInput
+		// console.log('canvas', testImage)
 		// var dataURL = canvas.toDataURL();
-		console.log('testImage', testImage)
-		
-		var blob = new Blob([JSON.stringify(testImage, null, 2)], {type : 'application/json'});
+		// console.log('testImage', testImage)
+		// Convert canvas image to Base64
+		var canvasImg = canvasInput.toDataURL()
+		console.log(canvasImg)
+		// Convert Base64 image to binary
 
-		console.log('blob', blob)
+		function dataURItoBlob(dataURI) {
+			// convert base64/URLEncoded data component to raw binary data held in a string
+			var byteString;
+			if (dataURI.split(',')[0].indexOf('base64') >= 0)
+				byteString = atob(dataURI.split(',')[1]);
+			else
+				byteString = unescape(dataURI.split(',')[1]);
+			// separate out the mime component
+			var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+			// write the bytes of the string to a typed array
+			var ia = new Uint8Array(byteString.length);
+			for (var i = 0; i < byteString.length; i++) {
+				ia[i] = byteString.charCodeAt(i);
+			}
+			return new Blob([ia], {type:mimeString});
+		}
+
+
+		var file = dataURItoBlob(canvasImg);
+		console.log('file: ', file)
+
+
+		// did the below work to make a blob????
+		// var blob = new Blob([JSON.stringify(testImage, null, 2)], {type : 'application/json'});
+
+		// console.log('blob', blob)
 
 		// console.log('[1]', testImage[1])
 		const fd = new FormData()
-		fd.append('image', blob, 'someName');
+		fd.append('image', file, 'someName');
 
-		var response = await axios.post('handwriting/', {
-			react_data: "hello from react"
+		var response = await axios.post('handwriting/', fd, {
+			headers: {
+			  'content-type': 'multipart/form-data'
+			}
 		})
 		// console.log('response: ', response, {
 		// 	headers: {
