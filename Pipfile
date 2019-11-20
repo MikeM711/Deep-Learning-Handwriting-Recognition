@@ -21,7 +21,6 @@ matplotlib = "*"
 opencv-python-headless = "*"
 tensorflow = "*"
 h5py = "*"
-tensorflow-addons = "=="
 
 [requires]
 python_version = "3.6"
