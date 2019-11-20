@@ -46,7 +46,7 @@ class Canvas extends Component {
 			for (var i = 0; i < byteString.length; i++) {
 				ia[i] = byteString.charCodeAt(i);
 			}
-			return new Blob([ia], {type:mimeString});
+			return new Blob([ia], { type: mimeString });
 		}
 
 
@@ -65,13 +65,13 @@ class Canvas extends Component {
 
 		var response = await axios.post('handwriting/', fd, {
 			headers: {
-			  'content-type': 'multipart/form-data'
+				'content-type': 'multipart/form-data'
 			}
 		})
 		// console.log('response: ', response, {
-		// 	headers: {
-		// 		'content-type': 'multipart/form-data'
-		// 	}
+		//  headers: {
+		//      'content-type': 'multipart/form-data'
+		//  }
 		// })
 
 		console.log('response: ', response)
@@ -84,8 +84,8 @@ class Canvas extends Component {
 		// actually now it's fast 90% of the time what...
 
 		// canvas.toBlob(function (blob) {
-		// 	saveAs(blob, "your-image.jpg");
-		// 	console.log('sup', blob)
+		//  saveAs(blob, "your-image.jpg");
+		//  console.log('sup', blob)
 		// });
 
 		// console.log('final canvas', canvas, typeof canvas)
@@ -103,11 +103,11 @@ class Canvas extends Component {
 	// sketch function
 	sketch = p => {
 		var canvas;
-		var drawing = [];
+		var drawings = [];
 		var currentPath = [];
 		var isDrawing = false;
 		p.setup = () => {
-			canvas = p.createCanvas(200, 200);
+			canvas = p.createCanvas(200, 150);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
 			canvas.mouseReleased(p.endPath);
@@ -116,7 +116,7 @@ class Canvas extends Component {
 		p.startPath = () => {
 			isDrawing = true;
 			currentPath = [];
-			drawing.push(currentPath);
+			drawings.push(currentPath);
 		};
 
 		p.endPath = () => {
@@ -124,26 +124,35 @@ class Canvas extends Component {
 		};
 
 		p.draw = () => {
+			var px = p.mouseX;
+			var py = p.mouseY;
 			p.background(0);
 
 			if (isDrawing) {
-				var point = {
-					x: p.mouseX,
-					y: p.mouseY
-				};
+				let point = {
+					x1: px,
+					y1: py,
+					x2: p.mouseX,
+					y2: p.mouseY
+				}
 				currentPath.push(point);
+				px = p.mouseX;
+				py = p.mouseY;
 			}
 
-			p.stroke(255);
-			p.strokeWeight(8);
-			p.noFill();
-			for (var i = 0; i < drawing.length; i++) {
-				var path = drawing[i];
-				p.beginShape();
-				for (var j = 0; j < path.length; j++) {
-					p.vertex(path[j].x, path[j].y);
+			//Shows the current drawing if there any data in drawing array
+			for (let i = 0; i < drawings.length; i++) {
+				let path = drawings[i];
+				if (drawings[i].length != 0) {
+					// p.beginShape();
+					for (let j = 0; j < path.length; j++) {
+						p.strokeWeight(20);
+						p.stroke(255);
+						p.line(path[j].x1, path[j].y1, path[j].x2, path[j].y2);
+						// p.vertex(path[j].x2, path[j].y2);
+					}
+					// p.endShape();
 				}
-				p.endShape();
 			}
 
 			if (this.state.submitted === true) {

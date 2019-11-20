@@ -19,6 +19,8 @@ Django = "==2.2.7"
 Pillow = "==6.2.1"
 matplotlib = "*"
 opencv-python-headless = "*"
+tensorflow = "*"
+h5py = "*"
 
 [requires]
 python_version = "3.6"
