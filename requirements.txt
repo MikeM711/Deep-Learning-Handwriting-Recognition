@@ -41,10 +41,12 @@ rsa==4.0
 SimpleWebSocketServer==0.1.1
 six==1.13.0
 sqlparse==0.3.0
+tb-nightly==1.14.0a20190603
 tensorboard==2.0.1
-tensorflow==2.0.0a0
+tensorflow==2.0.0b1
 tensorflow-estimator==2.0.1
 termcolor==1.1.0
+tf-estimator-nightly==1.14.0.dev2019060501
 typing==3.7.4.1
 urllib3==1.25.7
 webencodings==0.5.1
