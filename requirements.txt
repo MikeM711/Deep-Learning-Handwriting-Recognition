@@ -42,7 +42,7 @@ SimpleWebSocketServer==0.1.1
 six==1.13.0
 sqlparse==0.3.0
 tensorboard==2.0.1
-tensorflow==2.0.0
+tensorflow==2.0.0a0
 tensorflow-estimator==2.0.1
 termcolor==1.1.0
 typing==3.7.4.1
