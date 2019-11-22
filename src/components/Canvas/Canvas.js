@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import P5Wrapper from "react-p5-wrapper";
-import axios from 'axios';
-// import toBlob from 'canvas-toBlob';
-import testImage from './testImage.png'
+import axios from "axios";
+// import testImage from './testImage.png'
 
 import "./Canvas.css";
 
@@ -12,35 +11,22 @@ class Canvas extends Component {
 		this.state = {
 			drawing: [],
 			submitted: false,
-			prediction: ''
+			prediction: ""
 		};
 		this.sketch = this.sketch.bind(this);
-		this.fileUploadHandler = this.fileUploadHandler.bind(this)
+		this.fileUploadHandler = this.fileUploadHandler.bind(this);
 	}
 
 	// upload handler
 	async fileUploadHandler(img) {
-		console.log('inside fileuploadhandler')
-		// console.log('hey we have the image', img)
-		var canvasInput = document.getElementById('defaultCanvas0');
-		// var testImage = canvasInput
-		// console.log('canvas', testImage)
-		// var dataURL = canvas.toDataURL();
-		// console.log('testImage', testImage)
-		// Convert canvas image to Base64
-		var canvasImg = canvasInput.toDataURL()
-		console.log(canvasImg)
-		// Convert Base64 image to binary
-
 		function dataURItoBlob(dataURI) {
 			// convert base64/URLEncoded data component to raw binary data held in a string
 			var byteString;
-			if (dataURI.split(',')[0].indexOf('base64') >= 0)
-				byteString = atob(dataURI.split(',')[1]);
-			else
-				byteString = unescape(dataURI.split(',')[1]);
+			if (dataURI.split(",")[0].indexOf("base64") >= 0)
+				byteString = atob(dataURI.split(",")[1]);
+			else byteString = unescape(dataURI.split(",")[1]);
 			// separate out the mime component
-			var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+			var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 			// write the bytes of the string to a typed array
 			var ia = new Uint8Array(byteString.length);
 			for (var i = 0; i < byteString.length; i++) {
@@ -49,55 +35,28 @@ class Canvas extends Component {
 			return new Blob([ia], { type: mimeString });
 		}
 
+		// Get canvas from html
+		var canvasInput = document.getElementById("defaultCanvas0");
 
+		// Convert canvas image to Base64
+		var canvasImg = canvasInput.toDataURL();
+
+		// Convert the Base64 image to binary
 		var file = dataURItoBlob(canvasImg);
-		console.log('file: ', file)
+		console.log("file: ", file);
 
+		const fd = new FormData();
+		fd.append("image", file, "someName");
 
-		// did the below work to make a blob????
-		// var blob = new Blob([JSON.stringify(testImage, null, 2)], {type : 'application/json'});
-
-		// console.log('blob', blob)
-
-		// console.log('[1]', testImage[1])
-		const fd = new FormData()
-		fd.append('image', file, 'someName');
-
-		var response = await axios.post('handwriting/', fd, {
+		var response = await axios.post("handwriting/", fd, {
 			headers: {
-				'content-type': 'multipart/form-data'
+				"content-type": "multipart/form-data"
 			}
-		})
-		// console.log('response: ', response, {
-		//  headers: {
-		//      'content-type': 'multipart/form-data'
-		//  }
-		// })
+		});
 
-		console.log('response: ', response)
 		this.setState({
 			prediction: response.data
-		})
-		// console.log('canvas id element', canvas)
-
-		// this function makes things super slow...
-		// actually now it's fast 90% of the time what...
-
-		// canvas.toBlob(function (blob) {
-		//  saveAs(blob, "your-image.jpg");
-		//  console.log('sup', blob)
-		// });
-
-		// console.log('final canvas', canvas, typeof canvas)
-
-		// img = img.toBlob()
-		// const fd = new FormData();
-		// // academind - "React Image Upload Made Easy" - report progress @ 6:50 in video
-		// fd.append('image', img, 'the_name_the_file_has')
-		// var response = await axios.post('handwriting/', fd)
-
-		// console.log(response)
-
+		});
 	}
 
 	// sketch function
@@ -134,7 +93,7 @@ class Canvas extends Component {
 					y1: py,
 					x2: p.mouseX,
 					y2: p.mouseY
-				}
+				};
 				currentPath.push(point);
 				px = p.mouseX;
 				py = p.mouseY;
@@ -160,11 +119,10 @@ class Canvas extends Component {
 				this.setState({
 					submitted: false
 				});
-				// console.log(canvas);
 				const img = canvas.get();
 				// img.save();
 				// console.log(img)
-				this.fileUploadHandler(img)
+				this.fileUploadHandler(img);
 			}
 		};
 	};
@@ -180,7 +138,7 @@ class Canvas extends Component {
 	render() {
 		return (
 			<div className="canvas">
-				<h4 className="center">canvas here</h4>
+				<h4 className="center">Draw a number!</h4>
 				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
@@ -188,8 +146,9 @@ class Canvas extends Component {
 					className="btn waves-effect waves-light"
 					type="submit"
 					name="action"
-					onClick={this.handleOnClick}> Submit</button>
-				<p>Canvas Response: {this.state.prediction}</p>
+					onClick={this.handleOnClick}
+				>Submit</button>
+				<h5>Prediction: {this.state.prediction}</h5>
 			</div>
 		);
 	}

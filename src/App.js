@@ -7,7 +7,7 @@ import Canvas from './components/Canvas/Canvas.js'
 function App() {
   return (
     <div className="App">
-      <h1 className="center">Handwriting Recognition</h1>
+      <h1 className="center">ConvNet Handwriting Recognition</h1>
       <Header />
       <Canvas />
     </div>
