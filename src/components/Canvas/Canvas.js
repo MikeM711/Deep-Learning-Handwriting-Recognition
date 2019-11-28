@@ -141,20 +141,22 @@ class Canvas extends Component {
 		};
 
 		p.draw = () => {
-			var px = p.mouseX;
-			var py = p.mouseY;
+			// debugger;
+			var px = p.touchX || p.mouseX
+			var py = p.touchY || p.mouseY;
 			p.background(0);
 
 			if (isDrawing) {
 				let point = {
 					x1: px,
 					y1: py,
-					x2: p.mouseX,
-					y2: p.mouseY
+					x2: p.touchX || p.mouseX,
+					y2: p.touchY || p.mouseY
 				};
+				// debugger;
 				currentPath.push(point);
-				px = p.mouseX;
-				py = p.mouseY;
+				px = p.touchX || p.mouseX;
+				py = p.touchY || p.mouseY;
 			}
 
 			//Shows the current drawing if there any data in drawing array
