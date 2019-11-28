@@ -88,11 +88,46 @@ class Canvas extends Component {
 			canvas = p.createCanvas(this.state.canvasLength, 200);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
-			canvas.touchStarted(p.startPath)
+			canvas.touchStarted(p.startTouchPath)
 			canvas.mouseReleased(p.endPath);
 		};
 
 		p.startPath = () => {
+			console.log('regular mouse started')
+			isDrawing = true;
+			currentPath = [];
+			drawings.push(currentPath);
+			this.setState({
+				drawings: drawings
+			})
+		};
+
+		p.startTouchPath = () => {
+			console.log('touch started')
+
+			// Get canvas from html
+			var canvasHTML = document.getElementById("defaultCanvas0");
+
+			// Prevent scrolling when touching the canvas
+			document.body.addEventListener("touchstart", function (e) {
+				if (e.target == canvasHTML) {
+					console.log('inside touchstart')
+					e.preventDefault();
+				}
+			}, {passive: false});
+			document.body.addEventListener("touchend", function (e) {
+				if (e.target == canvasHTML) {
+					// console.log('inside touched') // may delete this and touchmove
+					e.preventDefault();
+				}
+			}, {passive: false});
+			document.body.addEventListener("touchmove", function (e) {
+				if (e.target == canvasHTML) {
+					e.preventDefault();
+				}
+			}, {passive: false});
+
+
 			isDrawing = true;
 			currentPath = [];
 			drawings.push(currentPath);
