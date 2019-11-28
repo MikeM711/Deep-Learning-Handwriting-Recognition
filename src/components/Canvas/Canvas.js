@@ -74,7 +74,7 @@ class Canvas extends Component {
 
 		// localStorage.setItem('drawings', [])
 		var drawingStorage = localStorage.getItem('drawings')
-		if (drawingStorage === null || drawingStorage.length !== 0) {
+		if (drawingStorage !== null || drawingStorage.length !== 0) {
 			drawingStorage = JSON.parse(localStorage.getItem('drawings'))
 			// debugger;
 			for (let i = 0; i < drawingStorage.length; i++) {
