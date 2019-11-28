@@ -20,7 +20,6 @@ class Canvas extends Component {
 			minLength: 400,
 			maxLength: 2000,
 			drawings: [],
-			posData: '' // are we sending correct data on mobile?
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this);
@@ -86,11 +85,13 @@ class Canvas extends Component {
 		var currentPath = [];
 		var isDrawing = false;
 		p.setup = () => {
+			// Dev note: If there are touch problems (ie: tablets that are larger than expected - can't write with them), we can use a different callback for touchStarted and mousePressed instead of the same callback and figuring what device is being used based on window size - but instead, figure out if it were "touched" or "mouse pressed" by the functions provided below
 			canvas = p.createCanvas(this.state.canvasLength, 200);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
-			canvas.touchMoved(p.startPath) // changed from touchStarted
+			canvas.touchStarted(p.startPath)
 			canvas.mouseReleased(p.endPath);
+			canvas.touchEnded(p.endPath)
 		};
 
 		p.startPath = () => {
@@ -104,103 +105,68 @@ class Canvas extends Component {
 			// Get canvas from html
 			var canvasHTML = document.getElementById("defaultCanvas0");
 
-			// // Prevent scrolling when touching the canvas
-			// document.body.addEventListener("touchstart", function (e) {
-			// 	if (e.target == canvasHTML) {
-			// 		console.log('inside touchstart')
-			// 		e.preventDefault();
-			// 	}
-			// }, {passive: false});
-			// document.body.addEventListener("touchend", function (e) {
-			// 	if (e.target == canvasHTML) {
-			// 		// console.log('inside touched') // may delete this and touchmove
-			// 		e.preventDefault();
-			// 	}
-			// }, {passive: false});
-			// document.body.addEventListener("touchmove", function (e) {
-			// 	if (e.target == canvasHTML) {
-			// 		e.preventDefault();
-			// 	}
-			// }, {passive: false});
-
+			// Prevent scrolling when touching the canvas
+			document.body.addEventListener("touchstart", function (e) {
+				if (e.target === canvasHTML) {
+					console.log('inside touchstart')
+					e.preventDefault();
+				}
+			}, { passive: false });
+			document.body.addEventListener("touchend", function (e) {
+				if (e.target === canvasHTML) {
+					// console.log('inside touched') // may delete this and touchmove
+					e.preventDefault();
+				}
+			}, { passive: false });
+			document.body.addEventListener("touchmove", function (e) {
+				if (e.target === canvasHTML) {
+					e.preventDefault();
+				}
+			}, { passive: false });
 
 		};
-
-		// p.startTouchPath = () => {
-		// 	console.log('touch started')
-
-		// 	// Get canvas from html
-		// 	var canvasHTML = document.getElementById("defaultCanvas0");
-
-		// 	// Prevent scrolling when touching the canvas
-		// 	document.body.addEventListener("touchstart", function (e) {
-		// 		if (e.target == canvasHTML) {
-		// 			console.log('inside touchstart')
-		// 			e.preventDefault();
-		// 		}
-		// 	}, {passive: false});
-		// 	document.body.addEventListener("touchend", function (e) {
-		// 		if (e.target == canvasHTML) {
-		// 			// console.log('inside touched') // may delete this and touchmove
-		// 			e.preventDefault();
-		// 		}
-		// 	}, {passive: false});
-		// 	document.body.addEventListener("touchmove", function (e) {
-		// 		if (e.target == canvasHTML) {
-		// 			e.preventDefault();
-		// 		}
-		// 	}, {passive: false});
-
-
-		// 	isDrawing = true;
-		// 	currentPath = [];
-		// 	drawings.push(currentPath);
-		// 	this.setState({
-		// 		drawings: drawings
-		// 	})
-		// };
 
 		p.endPath = () => {
 			isDrawing = false;
 		};
 
 		p.draw = () => {
-			// debugger;
-			var px = p.touchX || p.mouseX
-			var py = p.touchY || p.mouseY;
-			p.background(0);	
+			// Dev note: P5 does not use touchX or touchY - they use mouse coordinates
+			var px = p.mouseX
+			var py = p.mouseY;
+			p.background(0);
 
 			if (isDrawing) {
 				let point = {
 					x1: px,
 					y1: py,
-					x2: p.touchX || p.mouseX,
-					y2: p.touchY || p.mouseY
+					x2: p.mouseX,
+					y2: p.mouseY
 				};
-
-				// debugger;
-
 				currentPath.push(point);
-				px = p.touchX || p.mouseX;
-				py = p.touchY || p.mouseY;
+				px = p.mouseX;
+				py = p.mouseY;
 			}
-			this.setState({
-				// determining if we are creating *ONE* path
-				posData: JSON.stringify(currentPath)
-			})
 
 			//Shows the current drawing if there any data in drawing array
 			for (let i = 0; i < drawings.length; i++) {
 				let path = drawings[i];
 				if (drawings[i].length !== 0) {
-					// p.beginShape();
+					p.beginShape();
 					for (let j = 0; j < path.length; j++) {
 						p.strokeWeight(20);
 						p.stroke(255);
-						p.line(path[j].x1, path[j].y1, path[j].x2, path[j].y2);
-						// p.vertex(path[j].x2, path[j].y2);
+						p.noFill()
+
+						if (window.innerWidth <= 760) {
+							// for mobile
+							p.vertex(path[j].x2, path[j].y2);
+						} else {
+							// for desktop
+							p.line(path[j].x1, path[j].y1, path[j].x2, path[j].y2);
+						}
 					}
-					// p.endShape();
+					p.endShape();
 				}
 			}
 
@@ -219,7 +185,6 @@ class Canvas extends Component {
 
 	handleSizeChange = e => {
 		localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
-		// debugger;
 		const valuePX = e.target.value
 		const width = Number(valuePX.slice(0, valuePX.length - 2))
 		console.log(width)
@@ -238,7 +203,6 @@ class Canvas extends Component {
 	};
 
 	handleOnClickDelete = e => {
-		// e.preventDefault();
 		localStorage.setItem('drawings', [])
 		this.setState({
 			drawings: []
@@ -288,7 +252,6 @@ class Canvas extends Component {
 		return (
 			<div className="canvas">
 				<h4 className="">Draw something!</h4>
-				
 
 				<img className="trashIcon"
 					src={trashIcon}
@@ -322,7 +285,6 @@ class Canvas extends Component {
 					onClick={this.handleSubmitPrediction}
 				>Submit</button>
 				<h5>Prediction: {this.state.prediction}</h5>
-				<h6>Position Data: {this.state.posData}</h6>
 			</div>
 		);
 	}
