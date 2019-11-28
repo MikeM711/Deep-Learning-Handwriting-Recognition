@@ -89,7 +89,7 @@ class Canvas extends Component {
 			canvas = p.createCanvas(this.state.canvasLength, 200);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
-			canvas.touchMoved(p.startPath)
+			canvas.touchMoved(p.startPath) // changed from touchStarted
 			canvas.mouseReleased(p.endPath);
 		};
 
@@ -104,24 +104,24 @@ class Canvas extends Component {
 			// Get canvas from html
 			var canvasHTML = document.getElementById("defaultCanvas0");
 
-			// Prevent scrolling when touching the canvas
-			document.body.addEventListener("touchstart", function (e) {
-				if (e.target == canvasHTML) {
-					console.log('inside touchstart')
-					e.preventDefault();
-				}
-			}, {passive: false});
-			document.body.addEventListener("touchend", function (e) {
-				if (e.target == canvasHTML) {
-					// console.log('inside touched') // may delete this and touchmove
-					e.preventDefault();
-				}
-			}, {passive: false});
-			document.body.addEventListener("touchmove", function (e) {
-				if (e.target == canvasHTML) {
-					e.preventDefault();
-				}
-			}, {passive: false});
+			// // Prevent scrolling when touching the canvas
+			// document.body.addEventListener("touchstart", function (e) {
+			// 	if (e.target == canvasHTML) {
+			// 		console.log('inside touchstart')
+			// 		e.preventDefault();
+			// 	}
+			// }, {passive: false});
+			// document.body.addEventListener("touchend", function (e) {
+			// 	if (e.target == canvasHTML) {
+			// 		// console.log('inside touched') // may delete this and touchmove
+			// 		e.preventDefault();
+			// 	}
+			// }, {passive: false});
+			// document.body.addEventListener("touchmove", function (e) {
+			// 	if (e.target == canvasHTML) {
+			// 		e.preventDefault();
+			// 	}
+			// }, {passive: false});
 
 
 		};
