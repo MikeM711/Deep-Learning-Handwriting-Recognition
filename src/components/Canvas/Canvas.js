@@ -19,7 +19,8 @@ class Canvas extends Component {
 			canvasLength: localStorage.getItem('width') || 400,
 			minLength: 400,
 			maxLength: 2000,
-			drawings: []
+			drawings: [],
+			posData: '' // are we sending correct data on mobile?
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this);
@@ -153,7 +154,13 @@ class Canvas extends Component {
 					x2: p.touchX || p.mouseX,
 					y2: p.touchY || p.mouseY
 				};
+
 				// debugger;
+				console.log('hit here')
+				this.setState({
+					posData: px
+				})
+
 				currentPath.push(point);
 				px = p.touchX || p.mouseX;
 				py = p.touchY || p.mouseY;
@@ -258,6 +265,7 @@ class Canvas extends Component {
 		return (
 			<div className="canvas">
 				<h4 className="">Draw something!</h4>
+				<h6>Position Data: {this.state.posData}</h6>
 
 				<img className="trashIcon"
 					src={trashIcon}
