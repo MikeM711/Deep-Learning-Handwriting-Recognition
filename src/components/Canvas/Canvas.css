@@ -4,5 +4,34 @@
 
 div.canvas {
     padding-top:10px;
-    padding-left: 100px
+    padding-left: 10%
+}
+
+img.trashIcon {
+    width: 35px;
+    padding-top: 4px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    margin-right: 20px
+}
+
+img.plusCircle {
+    width: 35px;
+    padding-top: 4px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+img.minusCircle {
+    width: 35px;
+    padding-top: 4px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+select.size-dropdown-menu {
+    width: 250px;
+    display:inline;
+    vertical-align: top;
+    cursor: pointer;
 }

@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import P5Wrapper from "react-p5-wrapper";
 import axios from "axios";
+
 // import testImage from './testImage.png'
+import plusCircle from '../../images/plus_circle.svg'
+import minusCircle from '../../images/minus_circle.svg'
+import trashIcon from '../../images/trash_icon.svg'
 
 import "./Canvas.css";
 
@@ -11,7 +15,11 @@ class Canvas extends Component {
 		this.state = {
 			drawing: [],
 			submitted: false,
-			prediction: ""
+			prediction: "",
+			canvasLength: localStorage.getItem('width') || 400,
+			minLength: 400,
+			maxLength: 2000,
+			drawings: []
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this);
@@ -62,13 +70,25 @@ class Canvas extends Component {
 	// sketch function
 	sketch = p => {
 		var canvas;
-		var drawings = [];
+		var drawings = this.state.drawings;
+
+		// localStorage.setItem('drawings', [])
+		var drawingStorage = localStorage.getItem('drawings')
+		if (drawingStorage.length !== 0) {
+			drawingStorage = JSON.parse(localStorage.getItem('drawings'))
+			// debugger;
+			for (let i = 0; i < drawingStorage.length; i++) {
+				drawings.push(drawingStorage[i])
+			}
+		}
+
 		var currentPath = [];
 		var isDrawing = false;
 		p.setup = () => {
-			canvas = p.createCanvas(200, 150);
+			canvas = p.createCanvas(this.state.canvasLength, 200);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
+			canvas.touchStarted(p.startPath)
 			canvas.mouseReleased(p.endPath);
 		};
 
@@ -76,6 +96,9 @@ class Canvas extends Component {
 			isDrawing = true;
 			currentPath = [];
 			drawings.push(currentPath);
+			this.setState({
+				drawings: drawings
+			})
 		};
 
 		p.endPath = () => {
@@ -102,7 +125,7 @@ class Canvas extends Component {
 			//Shows the current drawing if there any data in drawing array
 			for (let i = 0; i < drawings.length; i++) {
 				let path = drawings[i];
-				if (drawings[i].length != 0) {
+				if (drawings[i].length !== 0) {
 					// p.beginShape();
 					for (let j = 0; j < path.length; j++) {
 						p.strokeWeight(20);
@@ -127,7 +150,19 @@ class Canvas extends Component {
 		};
 	};
 
-	handleOnClick = e => {
+	handleSizeChange = e => {
+		localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
+		// debugger;
+		const valuePX = e.target.value
+		const width = Number(valuePX.slice(0, valuePX.length - 2))
+		console.log(width)
+
+		localStorage.setItem('width', width);
+		console.log('canvasLength', this.state.canvasLength)
+		window.location.reload();
+	}
+
+	handleSubmitPrediction = e => {
 		e.preventDefault();
 		this.setState({
 			submitted: true
@@ -135,10 +170,80 @@ class Canvas extends Component {
 		// console.log("submitted picture to backend");
 	};
 
+	handleOnClickDelete = e => {
+		// e.preventDefault();
+		localStorage.setItem('drawings', [])
+		this.setState({
+			drawings: []
+		})
+		window.location.reload();
+	}
+
+	handleOnClickAddSize = e => {
+		localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
+		console.log('add on size')
+		if ((Number(this.state.canvasLength) + 100) <= this.state.maxLength) {
+			localStorage.setItem('width', Number(this.state.canvasLength) + 100)
+			// console.log(this.state.canvasLength)
+			window.location.reload();
+		}
+	}
+
+	handleOnClickSubtractSize = e => {
+		localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
+		console.log('subtract size')
+		if ((Number(this.state.canvasLength) - 100) >= this.state.minLength) {
+			localStorage.setItem('width', Number(this.state.canvasLength) - 100)
+			// console.log(this.state.canvasLength)
+			window.location.reload();
+		}
+	}
+
 	render() {
+
+		let canvasSizes = []
+		const { minLength, maxLength } = this.state
+		for (let i = minLength; i <= maxLength; i += 100) {
+			canvasSizes.push(`${i}px`)
+		}
+
+		const sizeList = canvasSizes.map(size => {
+			return (
+				<option className="canvas-size-dropdown-options"
+					value={size}
+					key={size}>
+					{size}</option>
+			);
+		});
+
+		const defaultSize = `${this.state.canvasLength}px`
+
 		return (
 			<div className="canvas">
-				<h4 className="center">Draw a number!</h4>
+				<h4 className="">Draw something!</h4>
+
+				<img className="trashIcon"
+					src={trashIcon}
+					alt=""
+					onClick={this.handleOnClickDelete}>
+				</img>
+				<img className="plusCircle"
+					src={plusCircle}
+					alt=""
+					onClick={this.handleOnClickAddSize}>
+				</img>
+				<img className="minusCircle"
+					src={minusCircle}
+					alt=""
+					onClick={this.handleOnClickSubtractSize}>
+				</img>
+				<select className="browser-default size-dropdown-menu"
+					onChange={this.handleSizeChange} defaultValue={defaultSize}>
+					<option value=''>-- Choose A Canvas Width --</option>
+					{sizeList}
+				</select>
+
+
 				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
@@ -146,7 +251,7 @@ class Canvas extends Component {
 					className="btn waves-effect waves-light"
 					type="submit"
 					name="action"
-					onClick={this.handleOnClick}
+					onClick={this.handleSubmitPrediction}
 				>Submit</button>
 				<h5>Prediction: {this.state.prediction}</h5>
 			</div>
