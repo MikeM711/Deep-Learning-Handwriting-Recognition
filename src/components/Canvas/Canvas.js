@@ -145,7 +145,7 @@ class Canvas extends Component {
 			// debugger;
 			var px = p.touchX || p.mouseX
 			var py = p.touchY || p.mouseY;
-			p.background(0);
+			p.background(0);	
 
 			if (isDrawing) {
 				let point = {
@@ -156,15 +156,14 @@ class Canvas extends Component {
 				};
 
 				// debugger;
-				console.log('hit here')
-				this.setState({
-					posData: px
-				})
 
 				currentPath.push(point);
 				px = p.touchX || p.mouseX;
 				py = p.touchY || p.mouseY;
 			}
+			this.setState({
+				posData: JSON.stringify(currentPath)
+			})
 
 			//Shows the current drawing if there any data in drawing array
 			for (let i = 0; i < drawings.length; i++) {
