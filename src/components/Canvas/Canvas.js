@@ -89,7 +89,7 @@ class Canvas extends Component {
 			canvas = p.createCanvas(this.state.canvasLength, 200);
 			p.noStroke();
 			canvas.mousePressed(p.startPath);
-			canvas.touchStarted(p.startPath)
+			canvas.touchMoved(p.startPath)
 			canvas.mouseReleased(p.endPath);
 		};
 
@@ -288,7 +288,7 @@ class Canvas extends Component {
 		return (
 			<div className="canvas">
 				<h4 className="">Draw something!</h4>
-				<h6>Position Data: {this.state.posData}</h6>
+				
 
 				<img className="trashIcon"
 					src={trashIcon}
@@ -322,6 +322,7 @@ class Canvas extends Component {
 					onClick={this.handleSubmitPrediction}
 				>Submit</button>
 				<h5>Prediction: {this.state.prediction}</h5>
+				<h6>Position Data: {this.state.posData}</h6>
 			</div>
 		);
 	}
