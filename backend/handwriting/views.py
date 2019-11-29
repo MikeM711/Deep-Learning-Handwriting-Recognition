@@ -9,9 +9,9 @@ import numpy as np
 import tensorflow.keras as keras
 from rest_framework.decorators import api_view
 
-from handwriting.utils.center_image import center_image
-from handwriting.utils.pad_image import pad_image
-from handwriting.utils.predictions import predictions
+from backend.handwriting.utils.center_image import center_image
+from backend.handwriting.utils.pad_image import pad_image
+from backend.handwriting.utils.predictions import predictions
 
 # Create your views here.
 
@@ -20,7 +20,7 @@ def data_return(request):
     image_request = request.data['image'].file
     im = Image.open(image_request)
     # im.show()
-    filepath = 'static/handwritingrecognition/user_image.png'
+    filepath = 'backend/static/handwritingrecognition/user_image.png'
     im.save(filepath)
     
     IMG_SIZE = 28

@@ -18,7 +18,7 @@ from django.urls import include, path, re_path # added include
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('handwriting/', include('handwriting.urls')), # added
+    path('handwriting/', include('backend.handwriting.urls')), # added
     path('admin/', admin.site.urls),
     re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
 ]
