@@ -1,18 +1,37 @@
-/* div.p5-canvas {
-    float:left;
-} */
+div.p5-canvas {
+    margin-top: 10px
+}
 
 div.canvas {
     padding-top:10px;
-    padding-left: 10%
+    padding-left: 5%
 }
 
 img.trashIcon {
     width: 35px;
     padding-top: 4px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: all 0.15s ease-in-out;
+}
+
+img.trashIcon:hover {
+    opacity: 40%
+}
+
+img.undoIcon {
+    left: 2px;
+    width: 35px;
     margin-bottom: 5px;
     cursor: pointer;
-    margin-right: 20px
+    margin-right: 20px;
+    transform: rotate(90deg);
+    transition: all 0.15s ease-in-out;
+}
+
+img.undoIcon:hover {
+    opacity: 40%
 }
 
 img.plusCircle {
@@ -20,18 +39,33 @@ img.plusCircle {
     padding-top: 4px;
     margin-bottom: 5px;
     cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+img.plusCircle:hover {
+    opacity: 40%
 }
 
 img.minusCircle {
     width: 35px;
     padding-top: 4px;
     margin-bottom: 5px;
+    margin-right: 5px;
     cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+img.minusCircle:hover {
+    opacity: 40%
 }
 
 select.size-dropdown-menu {
-    width: 250px;
+    width: 175px;
     display:inline;
     vertical-align: top;
     cursor: pointer;
+}
+
+h5.prediction-result {
+    margin-bottom: 100px
 }

@@ -6,6 +6,7 @@ import axios from "axios";
 import plusCircle from '../../images/plus_circle.svg'
 import minusCircle from '../../images/minus_circle.svg'
 import trashIcon from '../../images/trash_icon.svg'
+import undoIcon from '../../images/undo_icon.svg'
 
 import "./Canvas.css";
 
@@ -144,10 +145,9 @@ class Canvas extends Component {
 					y2: p.mouseY
 				};
 				currentPath.push(point);
-				px = p.mouseX;
-				py = p.mouseY;
 			}
-
+			// re-define drawings to be the state
+			drawings = this.state.drawings
 			//Shows the current drawing if there any data in drawing array
 			for (let i = 0; i < drawings.length; i++) {
 				let path = drawings[i];
@@ -199,15 +199,20 @@ class Canvas extends Component {
 		this.setState({
 			submitted: true
 		});
-		// console.log("submitted picture to backend");
 	};
 
 	handleOnClickDelete = e => {
-		localStorage.setItem('drawings', [])
 		this.setState({
 			drawings: []
 		})
-		window.location.reload();
+	}
+
+	handleOnClickUndo = e => {
+		let drawings = this.state.drawings
+		drawings = drawings.slice(0, drawings.length - 1)
+		this.setState({
+			drawings: drawings
+		})
 	}
 
 	handleOnClickAddSize = e => {
@@ -252,39 +257,46 @@ class Canvas extends Component {
 		return (
 			<div className="canvas">
 				<h4 className="">Draw something!</h4>
+				<div className="toolbar">
+					<img className="trashIcon"
+						src={trashIcon}
+						alt=""
+						onClick={this.handleOnClickDelete}>
+					</img>
 
-				<img className="trashIcon"
-					src={trashIcon}
-					alt=""
-					onClick={this.handleOnClickDelete}>
-				</img>
-				<img className="plusCircle"
-					src={plusCircle}
-					alt=""
-					onClick={this.handleOnClickAddSize}>
-				</img>
-				<img className="minusCircle"
-					src={minusCircle}
-					alt=""
-					onClick={this.handleOnClickSubtractSize}>
-				</img>
-				<select className="browser-default size-dropdown-menu"
-					onChange={this.handleSizeChange} defaultValue={defaultSize}>
-					<option value=''>-- Choose A Canvas Width --</option>
-					{sizeList}
-				</select>
+					<img className="undoIcon"
+						src={undoIcon}
+						alt=""
+						onClick={this.handleOnClickUndo}>
+					</img>
 
+					<img className="plusCircle"
+						src={plusCircle}
+						alt=""
+						onClick={this.handleOnClickAddSize}>
+					</img>
+					<img className="minusCircle"
+						src={minusCircle}
+						alt=""
+						onClick={this.handleOnClickSubtractSize}>
+					</img>
+					<select className="browser-default size-dropdown-menu"
+						onChange={this.handleSizeChange} defaultValue={defaultSize}>
+						<option value=''>-- Choose A Canvas Width --</option>
+						{sizeList}
+					</select>
+				</div>
 
 				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
 				<button
-					className="btn waves-effect waves-light"
+					className="btn waves-effect waves-light submit-prediction"
 					type="submit"
 					name="action"
 					onClick={this.handleSubmitPrediction}
 				>Submit</button>
-				<h5>Prediction: {this.state.prediction}</h5>
+				<h5 className= "prediction-result">Prediction: {this.state.prediction}</h5>
 			</div>
 		);
 	}
