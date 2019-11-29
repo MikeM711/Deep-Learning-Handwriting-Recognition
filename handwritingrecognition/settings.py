@@ -15,7 +15,6 @@ import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print('base dir: ', BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend.handwriting',
+    'handwriting',
     'rest_framework',
     'corsheaders',
 ]
@@ -60,7 +59,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-ROOT_URLCONF = 'backend.handwritingrecognition.urls'
+ROOT_URLCONF = 'handwritingrecognition.urls'
 
 TEMPLATES = [
     {
@@ -78,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.handwritingrecognition.wsgi.application'
+WSGI_APPLICATION = 'handwritingrecognition.wsgi.application'
 
 
 # Database
@@ -130,10 +129,10 @@ django_heroku.settings(locals())
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = 'backend/static/'
+STATIC_URL = '/static/'
 
 # Place static in the same location as webpack build files
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'backend/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 STATICFILES_DIRS = []
 
 # If you want to serve user uploaded files add these settings
