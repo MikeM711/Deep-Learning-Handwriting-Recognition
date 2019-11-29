@@ -205,7 +205,8 @@ class Canvas extends Component {
 
 	handleOnClickDelete = e => {
 		this.setState({
-			drawings: []
+			drawings: [],
+			prediction: ''
 		})
 	}
 
@@ -213,7 +214,8 @@ class Canvas extends Component {
 		let drawings = this.state.drawings
 		drawings = drawings.slice(0, drawings.length - 1)
 		this.setState({
-			drawings: drawings
+			drawings: drawings,
+			prediction: ''
 		})
 	}
 

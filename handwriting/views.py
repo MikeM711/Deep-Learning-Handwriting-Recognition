@@ -11,7 +11,8 @@ from rest_framework.decorators import api_view
 
 from handwriting.utils.center_image import center_image
 from handwriting.utils.pad_image import pad_image
-from handwriting.utils.predictions import predictions
+from handwriting.utils.cut_pictures import cut_pictures
+# from handwriting.utils.predictions import predictions
 
 # Create your views here.
 
@@ -22,25 +23,62 @@ def data_return(request):
     # im.show()
     filepath = 'static/handwritingrecognition/user_image.png'
     im.save(filepath)
-    
-    IMG_SIZE = 28
-    img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
-    mod_array = list(img_array)
 
-    # center the image - no padding
-    mod_array = center_image(mod_array)
+    model = keras.models.load_model("handwriting/utils/model.h5")
 
-    # we will now begin padding
-    mod_array = pad_image(mod_array)
+    # prepare for predictions
 
-    # convert to a numpy array
-    mod_array = np.array(mod_array, dtype='uint8')
+    def prepare(filepath):
+        IMG_SIZE = 28
+        img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
 
-    # resize the image, reshape, make prediction
-    new_array = cv2.resize(mod_array, (IMG_SIZE, IMG_SIZE))
-    new_array = new_array.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-    prediction = predictions(new_array)
+        mod_array = list(img_array)
 
-    print(prediction)
+        # trim off all excess pixels and center it up
+        mod_array = center_image(mod_array)
 
-    return HttpResponse(prediction)
+        # here is where we cut the images up
+        #### We will find where letters start and end and where spaces
+        array_of_chars, space_location = cut_pictures(mod_array)
+
+        char_img_converted_to_in_sample = []
+        for char_img in array_of_chars:
+
+            # trim off all excess pixels and center the char_img up
+            char_img = center_image(char_img)
+
+            # we will now begin padding
+            char_img = pad_image(char_img)
+            # convert to a numpy array
+            char_img = np.array(char_img, dtype='float32')
+
+            # resize the image, reshape, make prediction
+            char_img = cv2.resize(char_img, (IMG_SIZE, IMG_SIZE))
+            char_img /= 255
+
+            # plt.imshow(char_img, cmap=plt.cm.binary)
+            # plt.show()
+
+            char_img = char_img.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+            char_img_converted_to_in_sample.append(char_img)
+        return char_img_converted_to_in_sample, space_location
+
+    # The "answer key"
+    class_mapping = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt'
+
+    final_images, space_location = prepare(filepath)
+
+    final_prediction = []
+    for idx, img in enumerate(final_images):
+        prediction = model.predict(img)
+
+        idx_prediction = np.argmax(prediction[0])
+        char_prediction = class_mapping[idx_prediction]
+        final_prediction.append(char_prediction)
+        # print('we predict the answer is:', char_prediction)
+        if idx in space_location:
+            final_prediction.append(' ')
+
+    print('Final Prection: ', final_prediction)
+
+    return HttpResponse(final_prediction)
