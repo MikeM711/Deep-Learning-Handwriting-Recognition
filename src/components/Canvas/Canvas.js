@@ -184,14 +184,16 @@ class Canvas extends Component {
 	};
 
 	handleSizeChange = e => {
-		localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
-		const valuePX = e.target.value
-		const width = Number(valuePX.slice(0, valuePX.length - 2))
-		console.log(width)
-
-		localStorage.setItem('width', width);
-		console.log('canvasLength', this.state.canvasLength)
-		window.location.reload();
+		if (e.target.value !== '') {
+			localStorage.setItem('drawings', JSON.stringify(this.state.drawings))
+			const valuePX = e.target.value
+			const width = Number(valuePX.slice(0, valuePX.length - 2))
+			console.log(width)
+  
+			localStorage.setItem('width', width);
+			console.log('canvasLength', this.state.canvasLength)
+			window.location.reload();
+		}
 	}
 
 	handleSubmitPrediction = e => {
