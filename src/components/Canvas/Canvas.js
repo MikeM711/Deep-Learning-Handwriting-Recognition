@@ -21,6 +21,7 @@ class Canvas extends Component {
 			minLength: 400,
 			maxLength: 2000,
 			drawings: [],
+			predictionProgress: ''
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this);
@@ -28,6 +29,11 @@ class Canvas extends Component {
 
 	// upload handler
 	async fileUploadHandler(img) {
+
+		this.setState({
+			predictionProgress: 'Your handwriting is being predicted, please wait...'
+		})
+
 		function dataURItoBlob(dataURI) {
 			// convert base64/URLEncoded data component to raw binary data held in a string
 			var byteString;
@@ -64,7 +70,8 @@ class Canvas extends Component {
 		});
 
 		this.setState({
-			prediction: response.data
+			prediction: response.data,
+			predictionProgress: ''
 		});
 	}
 
@@ -216,7 +223,6 @@ class Canvas extends Component {
 		drawings = drawings.slice(0, drawings.length - 1)
 		this.setState({
 			drawings: drawings,
-			prediction: ''
 		})
 	}
 
@@ -261,7 +267,7 @@ class Canvas extends Component {
 
 		return (
 			<div className="canvas">
-				<h4 className="">Draw something!</h4>
+				<h4 className="">Write Something Below</h4>
 				<div className="toolbar">
 					<img className="trashIcon"
 						src={trashIcon}
@@ -296,12 +302,17 @@ class Canvas extends Component {
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
 				<button
-					className="btn waves-effect waves-light submit-prediction"
+					className="btn waves-effect waves-light blue darken-1 submit-prediction"
 					type="submit"
 					name="action"
 					onClick={this.handleSubmitPrediction}
-				>Submit</button>
-				<h5 className= "prediction-result">Prediction: {this.state.prediction}</h5>
+				>Predict</button>
+
+				{this.state.predictionProgress ? (
+					<h5>{this.state.predictionProgress}</h5>
+				) : (
+					<h5 className= "prediction-result">Prediction: {this.state.prediction}</h5>
+				)}	
 			</div>
 		);
 	}

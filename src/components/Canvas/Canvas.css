@@ -1,5 +1,6 @@
 div.p5-canvas {
-    margin-top: 10px
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 div.canvas {
@@ -50,7 +51,7 @@ img.minusCircle {
     width: 35px;
     padding-top: 4px;
     margin-bottom: 5px;
-    margin-right: 5px;
+    margin-right: 10px;
     cursor: pointer;
     transition: all 0.15s ease-in-out;
 }
@@ -64,6 +65,10 @@ select.size-dropdown-menu {
     display:inline;
     vertical-align: top;
     cursor: pointer;
+}
+
+button.submit-prediction {
+    font-size: 18px;
 }
 
 h5.prediction-result {

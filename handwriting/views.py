@@ -34,6 +34,19 @@ def data_return(request):
 
         mod_array = list(img_array)
 
+         # test to see if anything was drawn
+        for col in range(len(mod_array[0])):
+            for row in range(len(mod_array)):
+                pxl_value = mod_array[row][col]
+                if pxl_value != 0:
+                    break
+            if pxl_value != 0:
+                    break
+
+        print(row, col)
+        if col == len(mod_array[0]) - 1 and row == len(mod_array) - 1:
+            return False, False, False
+
         # trim off all excess pixels and center it up
         mod_array = center_image(mod_array)
 
@@ -78,10 +91,14 @@ def data_return(request):
     # The below letters are special letters
     # not only are their lowercase counterparts the same, they can also be the same height
     # these characters need special params to identify upper and lowercase
-    tall_uniform_lc_letters = 'pyi'
+    tall_uniform_lc_letters = 'pyik'
     TALL_UNIFORM_LC = 280
 
     final_images, space_location, char_img_heights = prepare(filepath)
+
+    # For the case where nothing is drawin
+    if final_images == False and space_location == False and char_img_heights == False:
+        return HttpResponse('Please draw something!')
 
     final_prediction = []
     for idx, img in enumerate(final_images):
@@ -97,6 +114,13 @@ def data_return(request):
                     char_prediction = char_prediction.lower()
             elif char_img_heights[idx] < LOWER_CASE:
                 char_prediction = char_prediction.lower()
+        
+        # Typically, "zeroes" (0) are fairly large, we would typically rather have "o" instead if a user makes them small
+        if char_prediction == 0 and char_img_heights[idx] < LOWER_CASE:
+            char_prediction = 'o'
+
+        # create an "i vs l" if statement if needed
+        # Try to make a better model first
 
         final_prediction.append(char_prediction)
         # print('we predict the answer is:', char_prediction)

@@ -25,13 +25,19 @@ def cut_pictures(mod_array):
 
     print(blank_cols)
     
+    LETTER_SEPERATOR = 25
+    SPACE_SEPERATOR = 125
+
     # if the user inputs one letter, we will simply return the image back, as an array
     # we will also send a space_location as an empty array
     if len(blank_cols) == 0:
         return [mod_array], []
 
-    LETTER_SEPERATOR = 25
-    SPACE_SEPERATOR = 125
+    # If the user inputs exactly 2 drawings, but are VERY close to each other vertically, we will return the image back
+    # We are saing that these 2 drawings are part of one character
+    
+    if blank_cols[len(blank_cols) - 1] - blank_cols[0] < LETTER_SEPERATOR:
+        return [mod_array], []
 
     class BlankPxlColSpace:
         def __init__(self, start, end):
@@ -68,6 +74,10 @@ def cut_pictures(mod_array):
         if group.end - group.start > SPACE_SEPERATOR:
             print('we have a space!')
             space_location.append(idx)
+    
+    # If there are no columns to seperate, we can assume that this is one full character
+    if len(img_cols_to_seperate) == 0:
+        return [mod_array], []
 
     print('space_location', space_location)
     print('img_cols_to_seperate', img_cols_to_seperate)
@@ -79,7 +89,8 @@ def cut_pictures(mod_array):
 
     characters_from_image = []
     for idx in range(len(img_cols_to_seperate) +1):
-        if idx == 0:
+
+        if idx == 0 and len(img_cols_to_seperate) != 0:
             letter_begin = 0
             letter_end = img_cols_to_seperate[idx].start
         elif idx == len(img_cols_to_seperate):
