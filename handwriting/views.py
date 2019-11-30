@@ -42,10 +42,13 @@ def data_return(request):
         array_of_chars, space_location = cut_pictures(mod_array)
 
         char_img_converted_to_in_sample = []
+        char_img_heights = []
         for char_img in array_of_chars:
 
             # trim off all excess pixels and center the char_img up
             char_img = center_image(char_img)
+
+            char_img_heights.append(len(char_img))
 
             # we will now begin padding
             char_img = pad_image(char_img)
@@ -61,12 +64,24 @@ def data_return(request):
 
             char_img = char_img.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
             char_img_converted_to_in_sample.append(char_img)
-        return char_img_converted_to_in_sample, space_location
+        return char_img_converted_to_in_sample, space_location, char_img_heights
 
     # The "answer key"
     class_mapping = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt'
 
-    final_images, space_location = prepare(filepath)
+
+    # Identifying the what case uniformed-cased letters should be
+    # Example: when a c should be a C
+    # We will say that half the canvas dictates the casing
+    LOWER_CASE = 200
+
+    # The below letters are special letters
+    # not only are their lowercase counterparts the same, they can also be the same height
+    # these characters need special params to identify upper and lowercase
+    tall_uniform_lc_letters = 'pyi'
+    TALL_UNIFORM_LC = 280
+
+    final_images, space_location, char_img_heights = prepare(filepath)
 
     final_prediction = []
     for idx, img in enumerate(final_images):
@@ -74,6 +89,15 @@ def data_return(request):
 
         idx_prediction = np.argmax(prediction[0])
         char_prediction = class_mapping[idx_prediction]
+
+        # Convert letter to lowercase if it is relatively small
+        if char_prediction.isnumeric() == False and char_prediction.lower() not in class_mapping:
+            if char_prediction.lower() in tall_uniform_lc_letters:
+                if char_img_heights[idx] < TALL_UNIFORM_LC:
+                    char_prediction = char_prediction.lower()
+            elif char_img_heights[idx] < LOWER_CASE:
+                char_prediction = char_prediction.lower()
+
         final_prediction.append(char_prediction)
         # print('we predict the answer is:', char_prediction)
         if idx in space_location:

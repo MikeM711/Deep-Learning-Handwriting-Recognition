@@ -154,7 +154,8 @@ class Canvas extends Component {
 				if (drawings[i].length !== 0) {
 					p.beginShape();
 					for (let j = 0; j < path.length; j++) {
-						p.strokeWeight(20);
+						// p.strokeWeight(20);
+						p.strokeWeight(15)
 						p.stroke(255);
 						p.noFill()
 
