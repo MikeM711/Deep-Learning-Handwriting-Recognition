@@ -71,6 +71,6 @@ button.submit-prediction {
     font-size: 18px;
 }
 
-h5.prediction-result {
+div.canvas {
     margin-bottom: 100px
 }

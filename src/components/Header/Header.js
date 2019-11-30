@@ -14,7 +14,7 @@ class Header extends Component {
 	render() {
 		return (
 			<div className="header">
-				<h4 className="center">Handwriting recognition using a deep learning neural network</h4>
+				{/* <h4 className="center">Handwriting recognition using a deep learning neural network</h4> */}
 			</div>
 		)
 	}
