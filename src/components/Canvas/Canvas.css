@@ -21,9 +21,22 @@ img.trashIcon:active {
     background: grey
 }
 
-img.trashIcon:hover {
-    opacity: 0.4
+@media (pointer:fine) {
+    /* Primary Input is a fine pointer device such as a mouse or stylus */
+    img.trashIcon:hover {
+        opacity: 0.4
+    }
+    img.undoIcon:hover {
+        opacity: 0.4
+    }
+    img.plusCircle:hover {
+        opacity: 0.4
+    }
+    img.minusCircle:hover {
+        opacity: 0.4
+    }
 }
+
 
 img.undoIcon {
     left: 2px;
@@ -39,10 +52,6 @@ img.undoIcon:active {
     background: grey
 }
 
-img.undoIcon:hover {
-    opacity: 0.4
-}
-
 img.plusCircle {
     width: 35px;
     padding-top: 4px;
@@ -53,10 +62,6 @@ img.plusCircle {
 
 img.plusCircle:active {
     background: grey
-}
-
-img.plusCircle:hover {
-    opacity: 0.4
 }
 
 img.minusCircle {
@@ -70,10 +75,6 @@ img.minusCircle {
 
 img.minusCircle:active {
     background: grey
-}
-
-img.minusCircle:hover {
-    opacity: 0.4
 }
 
 select.size-dropdown-menu {
