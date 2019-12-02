@@ -22,7 +22,7 @@ img.trashIcon:active {
 }
 
 img.trashIcon:hover {
-    opacity: 50%
+    opacity: 0.4
 }
 
 img.undoIcon {
@@ -40,7 +40,7 @@ img.undoIcon:active {
 }
 
 img.undoIcon:hover {
-    opacity: 50%
+    opacity: 0.4
 }
 
 img.plusCircle {
@@ -56,7 +56,7 @@ img.plusCircle:active {
 }
 
 img.plusCircle:hover {
-    opacity: 50%
+    opacity: 0.4
 }
 
 img.minusCircle {
@@ -73,7 +73,7 @@ img.minusCircle:active {
 }
 
 img.minusCircle:hover {
-    opacity: 50%
+    opacity: 0.4
 }
 
 select.size-dropdown-menu {
