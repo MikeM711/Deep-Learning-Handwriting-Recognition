@@ -17,8 +17,12 @@ img.trashIcon {
     transition: all 0.15s ease-in-out;
 }
 
+img.trashIcon:active {
+    background: grey
+}
+
 img.trashIcon:hover {
-    opacity: 40%
+    opacity: 50%
 }
 
 img.undoIcon {
@@ -31,8 +35,12 @@ img.undoIcon {
     transition: all 0.15s ease-in-out;
 }
 
+img.undoIcon:active {
+    background: grey
+}
+
 img.undoIcon:hover {
-    opacity: 40%
+    opacity: 50%
 }
 
 img.plusCircle {
@@ -43,8 +51,12 @@ img.plusCircle {
     transition: all 0.15s ease-in-out;
 }
 
+img.plusCircle:active {
+    background: grey
+}
+
 img.plusCircle:hover {
-    opacity: 40%
+    opacity: 50%
 }
 
 img.minusCircle {
@@ -56,8 +68,12 @@ img.minusCircle {
     transition: all 0.15s ease-in-out;
 }
 
+img.minusCircle:active {
+    background: grey
+}
+
 img.minusCircle:hover {
-    opacity: 40%
+    opacity: 50%
 }
 
 select.size-dropdown-menu {
