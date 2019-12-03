@@ -1,0 +1,133 @@
+div.instructions-component {
+    padding-left: 5%
+}
+
+.Collapsible {
+    width: 350px;
+    background-color: white; 
+    font-size: 18px;
+    overflow: hidden;
+    }
+    .Collapsible:hover {
+        cursor: pointer;
+    }
+  
+  .Collapsible__contentInner {
+    padding: 10px;
+    overflow: hidden; /*Great! */
+    border: 1px solid #ebebeb;
+    border-top: 0; }
+    .Collapsible__contentInner:hover {
+        cursor: default;
+    }
+    .Collapsible__contentInner p {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 20px; }
+      .Collapsible__contentInner p:last-child {
+        margin-bottom: 0; }
+  
+  .Collapsible__trigger {
+    display: block;
+    font-weight: 400;
+    text-decoration: none;
+    color: #333333;
+    position: relative;
+    border: 1px solid white;
+    padding: 10px;
+    background: #6cbee4;
+    color: white;
+    transition: 0.3s;}
+    .Collapsible__trigger:after {
+      font-family: 'FontAwesome';
+      content: '\f107';
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      display: block;
+      transition: transform 300ms; }
+    .Collapsible__trigger.is-open:after {
+      transform: rotateZ(180deg); }
+    .Collapsible__trigger.is-disabled {
+      opacity: 0.5;
+      background-color: grey; }
+      .Collapsible__trigger:hover {
+        opacity: 0.8; 
+        transition: 0.3s
+      }
+  
+  .CustomTriggerCSS {
+    background-color: lightcoral;
+    transition: background-color 200ms ease; }
+  
+  .CustomTriggerCSS--open {
+    background-color: darkslateblue; }
+  
+  .Collapsible__custom-sibling {
+    padding: 5px;
+    font-size: 12px;
+    background-color: #CBB700;
+    color: black; }
+
+/* img.trashIcon {
+    width: 35px;
+    padding-top: 4px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: all 0.15s ease-in-out;
+} */
+
+
+td.collapsible-items img.trashIcon{
+    float:left;
+    margin-right: 45px;
+
+}
+
+div.toolbar-undo {
+
+}
+
+td.collapsible-items img.undoIcon{
+    float:left;
+    margin-bottom: 0px;
+    margin-top: 6px;
+    margin-right: 45px
+}
+
+td.collapsible-items img.plusCircle{
+    float:left;
+    margin-right: 12px
+}
+
+td.collapsible-items img.minusCircle{
+    float:left;
+    margin-right:0px
+}
+
+td.collapsible-items p{
+    font-size: 16px;
+
+}
+div.instructions-toolbar p {
+    float:left;
+    margin-top:10px
+}
+
+div.instructions-toolbar br {
+    clear:both
+}
+
+img.canvasWriting {
+    max-width:100%;
+    max-height:100%;
+    border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+div.getting-started li{
+    font-size: 16px;
+    list-style-type:disc!important;
+     margin-left:15px;
+}

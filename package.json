@@ -12,6 +12,7 @@
     "file-saver": "^2.0.2",
     "p5": "^0.10.2",
     "react": "^16.11.0",
+    "react-collapsible": "^2.6.2",
     "react-dom": "^16.11.0",
     "react-p5-wrapper": "^2.0.0",
     "react-scripts": "3.2.0"

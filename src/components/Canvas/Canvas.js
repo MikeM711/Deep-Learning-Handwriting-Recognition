@@ -17,8 +17,8 @@ class Canvas extends Component {
 			drawing: [],
 			submitted: false,
 			prediction: "",
-			canvasLength: localStorage.getItem('width') || 400,
-			minLength: 400,
+			canvasLength: localStorage.getItem('width') || 300,
+			minLength: 300,
 			maxLength: 2000,
 			drawings: [],
 			predictionProgress: ''
@@ -309,7 +309,12 @@ class Canvas extends Component {
 				>Predict</button>
 
 				{this.state.predictionProgress ? (
-					<h5>{this.state.predictionProgress}</h5>
+					<div className="waiting-for-prediction">
+						<h5>{this.state.predictionProgress}</h5>
+						<div className="progress">
+      						<div className="indeterminate blue darken-1"></div>
+  						</div>
+					</div>
 				) : (
 					<h5 className= "prediction-result">Prediction: {this.state.prediction}</h5>
 				)}	

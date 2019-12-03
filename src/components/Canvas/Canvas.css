@@ -5,7 +5,8 @@ div.p5-canvas {
 
 div.canvas {
     padding-top:10px;
-    padding-left: 5%
+    padding-left: 5%;
+    padding-bottom: 100px
 }
 
 img.trashIcon {
@@ -88,6 +89,6 @@ button.submit-prediction {
     font-size: 18px;
 }
 
-div.canvas {
-    margin-bottom: 100px
+div.progress {
+    width: 350px
 }
