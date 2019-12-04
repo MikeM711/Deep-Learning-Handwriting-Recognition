@@ -98,12 +98,12 @@ td.collapsible-items img.undoIcon{
 
 td.collapsible-items img.plusCircle{
     float:left;
-    margin-right: 12px
+    margin-right: 0px
 }
 
 td.collapsible-items img.minusCircle{
     float:left;
-    margin-right:0px
+    margin-right:12px
 }
 
 td.collapsible-items p{
@@ -123,11 +123,55 @@ img.canvasWriting {
     max-width:100%;
     max-height:100%;
     border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+img.horiIntf1 {
+  max-width:100%;
+  max-height:100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+img.horiIntf2 {
+  max-width:100%;
+  max-height:100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+img.horiIntf3 {
+  max-width:100%;
+  max-height:100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+img.caseEx {
+  max-width:100%;
+  max-height:100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+img.spaceEx {
+  max-width:100%;
+  max-height:100%;
+  border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 div.getting-started li{
     font-size: 16px;
     list-style-type:disc!important;
-     margin-left:15px;
+}
+
+div.best-practices li{
+  font-size: 16px;
+  list-style-type:disc!important;
+}
+
+div.best-practices h6{
+  padding-left:20px;
+  padding-top: 10px
 }

@@ -267,7 +267,6 @@ class Canvas extends Component {
 
 		return (
 			<div className="canvas">
-				<h4 className="">Write Something Below</h4>
 				<div className="toolbar">
 					<img className="trashIcon"
 						src={trashIcon}
