@@ -64,23 +64,22 @@ class Header extends Component {
                         transitionTime={50}
                         open={false}>
                         <div className="best-results">
-                            <p className="center"><i>"How do I achieve the most accurate prediction?"</i></p>
-                            <p>The following sections will offer you advice to achieve the best predictions.</p>
+                            <p className="center"><i>"How can I achieve the most accurate prediction?"</i></p>
                             <h5><u>1. Space your characters</u></h5>
                             <p>The most common pitfall: not having enough horizontal space between characters. The result will be LESS characters than one anticipates.</p>
                             <p><b>Example #1: Common Scenario</b></p>
                             <img className="horiIntf1" src={horiIntf1} alt=""></img>
-                            <p><b>Description:</b> The above image will not return what is expected because the "H" and "e" are too close to each other. Fortunately, the space between "e" and "y" are perfect</p>
+                            <p><b>Description:</b> The above image will not return what is expected because the "H" and "e" are too close to each other. Fortunately, the space between "e" and "y" is good.</p>
                             <p><b>Result:</b> "He" will be predicted as one letter, and "y" as another. There will be 2 characters predicted instead of 3.</p>
                             <p><b>The Fix:</b> Add a little more space between the "H" and the "e" so that all 3 letters will be predicted seperately.</p>
                             <p><b>Example #2: "Hanging" characters</b></p>
                             <img className="horiIntf2" src={horiIntf2} alt=""></img>
                             <p><b>Description:</b> Do not write underneath characters. There needs to be some horizontal space.</p>
-                            <p><b>Result:</b> The first "Tu" will be predicted as one letter. Fortunately, the 2nd "T" and "u" have enough space to be predicted seperately. There will be 3 characters predicted instead of 4</p>
+                            <p><b>Result:</b> The first "Tu" will be predicted as one letter. Fortunately, the 2nd "T" and "u" have enough space to be predicted seperately. There will be 3 characters predicted instead of 4.</p>
                             <p><b>The Fix:</b> Move the 1st "u" out from under the "T", and give it some horizontal space like the 2nd "u".</p>
                             <p><b>Example #3: A helping hand</b></p>
                             <img className="horiIntf3" src={horiIntf3} alt=""></img>
-                            <p><b>Description:</b> We are allowed some "sloppiness" when writing.</p>
+                            <p><b>Description:</b> We are allowed to be a little messy when writing. If we leave a few "breaks" inside of letters, the algorithm will help us out.</p>
                             <p><b>Result:</b> The broken "H" will be read as one letter. Just as intended!</p>
                             <h5><u>2. Uppercase vs Lowercase</u></h5>
                             <p className="center"><i>"What determines a 'c' from a 'C'?"</i></p>

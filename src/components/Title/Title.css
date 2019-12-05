@@ -1,0 +1,25 @@
+div.main-title{
+    background: #b3cefc;
+    width:fit-content; 
+    height:fit-content;
+}
+
+div.github-repo {
+    padding-top: 18px;
+    padding-bottom: 15px;
+}
+
+div.github-repo a {
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+.github-repo.github-link:hover {
+    opacity: 0.4;
+}
+  
+div.github-repo img {
+    vertical-align: middle;
+    width: 30px;
+    height: auto;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
+
 import './App.css';
-import Header from './components/Header/Header.js'
+import Title from './components/Title/Title.js'
 import Canvas from './components/Canvas/Canvas.js'
 import Instructions from './components/Instructions/Instructions.js'
 
@@ -8,8 +9,7 @@ import Instructions from './components/Instructions/Instructions.js'
 function App() {
   return (
     <div className="App">
-      <h1 className="center">ConvNet Handwriting Recognition</h1>
-      <Header />
+      <Title />
       <Instructions />
       <Canvas />
     </div>

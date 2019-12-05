@@ -116,7 +116,7 @@ def data_return(request):
                 char_prediction = char_prediction.lower()
         
         # Typically, "zeroes" (0) are fairly large, we would typically rather have "o" instead if a user makes them small
-        if char_prediction == 0 and char_img_heights[idx] < LOWER_CASE:
+        if char_prediction == '0' and char_img_heights[idx] < LOWER_CASE:
             char_prediction = 'o'
 
         # create an "i vs l" if statement if needed

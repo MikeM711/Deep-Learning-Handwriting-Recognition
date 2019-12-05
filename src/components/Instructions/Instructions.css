@@ -1,7 +1,3 @@
-div.instructions-component {
-    padding-left: 5%
-}
-
 .Collapsible {
     width: 350px;
     background-color: white; 
@@ -82,10 +78,6 @@ div.instructions-component {
 td.collapsible-items img.trashIcon{
     float:left;
     margin-right: 45px;
-
-}
-
-div.toolbar-undo {
 
 }
 
