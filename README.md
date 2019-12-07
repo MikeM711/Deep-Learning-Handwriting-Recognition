@@ -1,10 +1,10 @@
 # Deep Learning Handwriting Recognition
 
-A full stack React/JavaScript and Python/Django web application that recognizes handwriting and converts it into text, by incorporating a machine learning model that was pre-trained using the [EMNIST Dataset on Kaggle](https://www.kaggle.com/crawford/emnist). This neural network model recognizes all digits, all uppercase letters, and all lowercase letters that are visibly different from their uppercase counterparts. 
+A full stack React/JavaScript and Python/Django web application that recognizes handwriting and converts it into text, by incorporating a machine learning model that was pre-trained using the [EMNIST Dataset](https://www.kaggle.com/crawford/emnist) on Kaggle. This neural network model recognizes all digits, all uppercase letters, and all lowercase letters that are visibly different from their uppercase counterparts. 
 
 The model was trained on the following characters: `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt`
 
-To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction of such a character is converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `ikpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
+To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `ikpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
 
 ## Features
 - The following characters can be predicted from handwriting: `0-9, a-z, A-Z` (62 characters)
@@ -15,28 +15,28 @@ To account for these "left out" lowercase letters that look like their uppercase
 
 Website: [Live Heroku App](https://handwriting-recognition-py-js.herokuapp.com/)
 
-<img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png" />
+<img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png" style="border: 1px solid #ddd; border-radius: 4px;"/>
 
 ## Model
 There are some models that people have made over at [Kaggle](https://www.kaggle.com/crawford/emnist/kernels) that also use Tensorflow/Keras. But I created my own model and saved it as `model.h5`.
 
 -- MODEL TWEAKING: WORK IN PROGRESS --
 
-## How the incoming data is fed into the model
-1. Example: user writes and submits the handwriting "Hey you" on the frontend.
+## How the Incoming Data is Fed Into The Model
+1. Example: A user writes and submits the handwriting, "Hey you", on the client.
 2. The frontend takes the image data found in the canvas element and converts it into a binary blob.
-3. Blob is sent as a `POST` request to Django.
-4. Image is saved in Django and the filepath is loaded into `cv2`.
+3. The blob is sent as a `POST` request to Django.
+4. The image is saved in Django and the filepath is loaded into `cv2`.
 5. The entire "Hey you" image is trimmed of excess pixels.
 6. "Hey you" is cut up on each character giving us the 6 images "H", "e", "y", "y", "o", "u".
    * Images are cut up where drawing lines in the x-direction are not continuous, and where the space of discontinuity is of a decent size. Small discontinuous spaces are left alone.
    * The algorithm will notice a very large discontinuous space in the x-direction between the two "y" letters, which is implied to be a text-space. We will store this knowledge in the variable `space_location`.
 7. Each image is trimmed of excess pixels. The height of each "raw" image is accounted for in the variable `char_img_heights`.
 8. Each image is padded with extra pixels in a way where the image becomes a square shape. This is so that the image will not be warped when the image is resized down during data normalization.
-9. Each image is Normalized. Each image is converted to a numpy array, reshaped, and the pixel values range from 0 to 1 instead of 0 to 255.
+9. Each image is normalized. Each image is converted to a numpy array, reshaped, and the pixel values range from 0 to 1 instead of 0 to 255.
 10. We loop through all of these images - we make a predicton at each image and append the character result to `final_prediction`.
-    * The model prediction for each image will be an output of a number between `0` through `46` which corresponds to index of the 47 characters that the model was trained on. (Ex: an output of `17` corresponds to `H` in the mapping).
-    * When the final prediction is mapped and if that prediction is alphabetical, we make sure that the lowercase compliment is found inside of the mapping. If it is not, that means we have a letter where the lower and uppercase are similar, the only difference is the size. We need to make a decision on the output casing based on the size of the image, which we get from `char_img_heights`. This will be performed on the images "y", "y", "o" and "u". The letter "y" gets a special constraint because its height is larger than the average lowercase letter.
+    * The model prediction for each image will be an output of a number between `0` through `46` which corresponds to the index of the 47 characters that the model was trained on. (Ex: an output of `17` corresponds to `H` in the mapping).
+    * When the final prediction is mapped and if that prediction is alphabetical, we make sure that the lowercase compliment is found inside of the mapping. If it is not, that means we have a letter where the lower and uppercase are similar, the only difference is the size. We need to make a decision on the output casing based on the size of the image, which we get from `char_img_heights`. This decision will be performed on the images "y", "y", "o" and "u". The letter "y" gets a special constraint because its height is larger than the average lowercase letter.
     * While iterating, if the number of loop iterations equals a number inside `space_location`, a `" "` is appended to the final result. In this example, `space_location` will have `[2]` signaling that there's a space after "y" - which will give us a `"Hey "` at the end of the first "y" iteration.
 11. Django responds with `final_prediction` to React with `"Hey you"`, and React displays the result on the client.
 
