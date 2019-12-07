@@ -15,7 +15,7 @@ To account for these "left out" lowercase letters that look like their uppercase
 
 Website: [Live Heroku App](https://handwriting-recognition-py-js.herokuapp.com/)
 
-<img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png" style="border: 1px solid #ddd; border-radius: 4px;"/>
+<img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png"/>
 
 ## Model
 There are some models that people have made over at [Kaggle](https://www.kaggle.com/crawford/emnist/kernels) that also use Tensorflow/Keras. But I created my own model and saved it as `model.h5`.
