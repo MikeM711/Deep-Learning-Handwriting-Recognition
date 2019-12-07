@@ -61,7 +61,7 @@ class Canvas extends Component {
 		console.log("file: ", file);
 
 		const fd = new FormData();
-		fd.append("image", file, "someName");
+		fd.append("image", file);
 
 		var response = await axios.post("handwriting/", fd, {
 			headers: {

@@ -51,7 +51,7 @@ def data_return(request):
         mod_array = center_image(mod_array)
 
         # here is where we cut the images up
-        #### We will find where letters start and end and where spaces
+        #### We will find where letters start and end and where large spaces are found
         array_of_chars, space_location = cut_pictures(mod_array)
 
         char_img_converted_to_in_sample = []
@@ -127,6 +127,6 @@ def data_return(request):
         if idx in space_location:
             final_prediction.append(' ')
 
-    print('Final Prection: ', final_prediction)
+    print('Final Prediction: ', final_prediction)
 
     return HttpResponse(final_prediction)

@@ -1,66 +1,57 @@
-# Handwriting Recognition
+# Deep Learning Handwriting Recognition
 
-A Python and TensorFlow/Django backend with a React frontend to read handwriting
+A full stack React/JavaScript and Python/Django web application that recognizes handwriting and converts it into text, by incorporating a machine learning model that was pre-trained using the [EMNIST Dataset on Kaggle](https://www.kaggle.com/crawford/emnist). This neural network model recognizes all digits, all uppercase letters, and all lowercase letters that are visibly different from their uppercase counterparts. 
 
-### Currently
+The model was trained on the following characters: `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt`
 
-Working on the frontend
-- Created a canvas using p5
-- Canvas works properly
-- We can save a drawing if we want to
+To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction of such a character is converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `ikpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
 
-Other Observations:
-- If I draw a number that are *exactly centered* - I can dump this image into my MNIST model and receive a correct result!
+## Features
+- The following characters can be predicted from handwriting: `0-9, a-z, A-Z` (62 characters)
+- Characters can be placed anywhere on the canvas, providing that the character has some horizontal space between other characters
+- Whole sentences can be created
+- "Broken" and "sloppy" letters can be detected with pretty good accuracy
+- React as the frontend
 
-No backend as of yet
+Website: [Live Heroku App](https://handwriting-recognition-py-js.herokuapp.com/)
 
+<img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png" />
 
-### Todos
-The first goal: recognize the letters 'a', 'b', and 'c'
+## Model
+There are some models that people have made over at [Kaggle](https://www.kaggle.com/crawford/emnist/kernels) that also use Tensorflow/Keras. But I created my own model and saved it as `model.h5`.
 
-Frontend
+-- MODEL TWEAKING: WORK IN PROGRESS --
 
-1. ✅ Be able to draw on the canvas
-2. Be able to read that drawing in React (assuming in the form of pixels? we'll see) upon submit
-
-Create the testing samples
-
-3. Once we are able to read the data, we will create tons of 'a', 'b', and 'c' letters to train our model with. Have an appropriate file structure for the data to make it easy to gather
-- we might be able to use a Kaggle dataset!
-
-Create standalone Python/Tensorflow files
-
-4. Py data file - Create the dataset (use pickle)
-5. Py train file - Create a model for the dataset - find the best one, pay close attention to val_loss (Tensorboard)
-6. Py predict file - Test out a couple of your own samples -  just to make sure model.predict() works as intended. This is what will be used in production. 
-
-Backend
-
-7. First make sure I can have React talk to Django (because I've never done this before), and vice-versa
-8. Test out some calls - more than likely we'll be using postman, and then try it with React
-9. Hook up Python and Django together for the complete backend endpoint
-10. Test out some calls again
-
-Back to frontend
-
-11. Have React receive the call back from Django and output that in some `Result` section of the frontend
+## How the incoming data is fed into the model
+1. Example: user writes and submits the handwriting "Hey you" on the frontend.
+2. The frontend takes the image data found in the canvas element and converts it into a binary blob.
+3. Blob is sent as a `POST` request to Django.
+4. Image is saved in Django and the filepath is loaded into `cv2`.
+5. The entire "Hey you" image is trimmed of excess pixels.
+6. "Hey you" is cut up on each character giving us the 6 images "H", "e", "y", "y", "o", "u".
+   * Images are cut up where drawing lines in the x-direction are not continuous, and where the space of discontinuity is of a decent size. Small discontinuous spaces are left alone.
+   * The algorithm will notice a very large discontinuous space in the x-direction between the two "y" letters, which is implied to be a text-space. We will store this knowledge in the variable `space_location`.
+7. Each image is trimmed of excess pixels. The height of each "raw" image is accounted for in the variable `char_img_heights`.
+8. Each image is padded with extra pixels in a way where the image becomes a square shape. This is so that the image will not be warped when the image is resized down during data normalization.
+9. Each image is Normalized. Each image is converted to a numpy array, reshaped, and the pixel values range from 0 to 1 instead of 0 to 255.
+10. We loop through all of these images - we make a predicton at each image and append the character result to `final_prediction`.
+    * The model prediction for each image will be an output of a number between `0` through `46` which corresponds to index of the 47 characters that the model was trained on. (Ex: an output of `17` corresponds to `H` in the mapping).
+    * When the final prediction is mapped and if that prediction is alphabetical, we make sure that the lowercase compliment is found inside of the mapping. If it is not, that means we have a letter where the lower and uppercase are similar, the only difference is the size. We need to make a decision on the output casing based on the size of the image, which we get from `char_img_heights`. This will be performed on the images "y", "y", "o" and "u". The letter "y" gets a special constraint because its height is larger than the average lowercase letter.
+    * While iterating, if the number of loop iterations equals a number inside `space_location`, a `" "` is appended to the final result. In this example, `space_location` will have `[2]` signaling that there's a space after "y" - which will give us a `"Hey "` at the end of the first "y" iteration.
+11. Django responds with `final_prediction` to React with `"Hey you"`, and React displays the result on the client.
 
 
-### Future:
-- Be able to read all lowercase a-z (one input in the canvas)
-  - Will need samples of all of these lowercase letters, of course
-- Be able to read all uppercase A-Z
-- Be able to read full words/sentences, plan below:
-  - "chop" up every single letter in the canvas
-  	- We could say one "chop" happens when we have a good amount of black pixel space between 2 drawn lines (letters)
-  	- Caveat: we should not allow letters to interfere with other letters' vertical space (ie: writing "hey" - we should not allow the 'y' to end up under the 'e' so that this algorithm can work properly)
-  	- A giant amount of black pixel space indicates a space
+## Installation
 
-### Extras
-- Giving the user more "canvas" space if they perfer so
-  - We would do this by allowing the page to scroll left and right
-- Giving the user some sort of "undo" function
-  - We could do that by eliminating data in React state!
-- If we are doing "chops", we will probably need to normalize the data so that all images are the same size
-  - Maybe we would pad the images with black space?
-- using 'o' vs 'O' - I'm thinking we would get a reference of the height of all letters that are being handwritten and adjust the letter going into the model accordingly
+1. Clone the repo: `git clone https://github.com/MikeM711/Deep-Learning-Handwriting-Recognition.git`
+2. Go into the root file: `cd Deep-Learning-Handwriting-Recognition`
+3. Install npm packages for React: `npm install`
+4. Make sure you have pipenv installed via pip: `sudo -H pip install pipenv`
+5. Create a shell inside a virtual environment, at the address of your root: `pipenv shell`
+6. Install packages for Django while inside your virtual environment: `pip install -r requirements.txt`
+7. Run the frontend server: `npm start`
+8. Run backend server within your virtual environment: `python manage.py runserver`
+
+**Toubleshooting**
+- Q: "How do I know that I am in my virtual environment?"
+- A: In your terminal tab, you will notice that the address of the folder is in parenthesis. It should look like `(Deep-Learning-Handwriting-Recognition)...`
