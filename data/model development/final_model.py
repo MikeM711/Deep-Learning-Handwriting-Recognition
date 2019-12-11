@@ -33,7 +33,6 @@ conv_layers = [2]
 for dense_layer in dense_layers:
     for layer_size in layer_sizes:
         for conv_layer in conv_layers:
-            # The first time around - no "0.2-Dropout" in the name
             NAME = "Final:{}-conv-{}-nodes-{}-dense-0.2-Dropout-{}".format(
                 conv_layer, layer_size, dense_layer, int(time.time()))
             
@@ -71,10 +70,8 @@ for dense_layer in dense_layers:
                         loss='categorical_crossentropy',
                         metrics=['accuracy'])
 
-            # Changes: batch_size = 32, no verbose
             model.fit(train_x, train_y, epochs=10, batch_size=32,
                     validation_data=(val_x, val_y),
                     callbacks=[tensorboard])
 
             model.save('model.h5')
-            # Previously: give_this_a_shot.h5

@@ -71,7 +71,6 @@ for dense_layer in dense_layers:
                         loss='categorical_crossentropy',
                         metrics=['accuracy'])
 
-            # batch_size = 32, no verbose
             model.fit(train_x, train_y, epochs=10, batch_size=32,
                     validation_data=(val_x, val_y),
                     callbacks=[tensorboard])

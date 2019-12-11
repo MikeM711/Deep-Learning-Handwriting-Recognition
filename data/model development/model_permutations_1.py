@@ -25,7 +25,7 @@ train_x, val_x, train_y, val_y = train_test_split(
     train_x, train_y, test_size=0.10, random_state=7)
 
 # 1st run: create the following permutations of models
-dense_layers = [1, 2]
+dense_layers = [0, 1, 2]
 layer_sizes = [32, 64, 128]
 conv_layers = [1, 2, 3]
 
@@ -70,7 +70,6 @@ for dense_layer in dense_layers:
                         loss='categorical_crossentropy',
                         metrics=['accuracy'])
 
-            # batch_size = 32, no verbose
             model.fit(train_x, train_y, epochs=10, batch_size=32,
                     validation_data=(val_x, val_y),
                     callbacks=[tensorboard])
