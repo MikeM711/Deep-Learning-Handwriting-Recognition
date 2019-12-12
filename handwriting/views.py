@@ -24,7 +24,8 @@ def data_return(request):
     filepath = 'static/handwritingrecognition/user_image.png'
     im.save(filepath)
 
-    model = keras.models.load_model("handwriting/utils/models/model_best_emnist.h5")
+    # Attempting to find a model that is "relatively" reliable 
+    model = keras.models.load_model("handwriting/utils/models/model_placeholder.h5")
 
     # prepare for predictions
 

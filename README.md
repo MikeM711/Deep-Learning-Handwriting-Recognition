@@ -4,7 +4,7 @@ A full stack React/JavaScript and Python/Django web application that recognizes 
 
 The model was trained on the following characters: `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt`
 
-To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `ikpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
+To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `klpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
 
 ## Features
 - The following characters can be predicted from handwriting: `0-9, a-z, A-Z` (62 characters)
