@@ -24,7 +24,7 @@ def data_return(request):
     filepath = 'static/handwritingrecognition/user_image.png'
     im.save(filepath)
 
-    model = keras.models.load_model("handwriting/utils/model.h5")
+    model = keras.models.load_model("handwriting/utils/models/model_best_emnist.h5")
 
     # prepare for predictions
 
@@ -91,7 +91,7 @@ def data_return(request):
     # The below letters are special letters
     # not only are their lowercase counterparts the same, they can also be the same height
     # these characters need special params to identify upper and lowercase
-    tall_uniform_lc_letters = 'pyik'
+    tall_uniform_lc_letters = 'klpy'
     TALL_UNIFORM_LC = 280
 
     final_images, space_location, char_img_heights = prepare(filepath)
