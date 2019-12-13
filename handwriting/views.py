@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
+max_ = max # cv2 * overrides python max function
 from PIL import Image
 from cv2 import *
 import numpy as np
@@ -14,21 +15,10 @@ from handwriting.utils.pad_image import pad_image
 from handwriting.utils.cut_pictures import cut_pictures
 # from handwriting.utils.predictions import predictions
 
-# Create your views here.
-
 @api_view(['POST'])
 def data_return(request):
-    image_request = request.data['image'].file
-    im = Image.open(image_request)
-    # im.show()
-    filepath = 'static/handwritingrecognition/user_image.png'
-    im.save(filepath)
 
-    # Attempting to find a model that is "relatively" reliable 
-    model = keras.models.load_model("handwriting/utils/models/model_placeholder.h5")
-
-    # prepare for predictions
-
+    # Function prepares the raw image given by the user for predictions
     def prepare(filepath):
         IMG_SIZE = 28
         img_array = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
@@ -80,9 +70,50 @@ def data_return(request):
             char_img_converted_to_in_sample.append(char_img)
         return char_img_converted_to_in_sample, space_location, char_img_heights
 
-    # The "answer key"
-    class_mapping = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt'
+    # Function takes in a model and img and outputs a character prediction
+    def make_prediction(model, img):
+        prediction = model.predict(img)
+        idx_prediction = np.argmax(prediction[0])
+        return class_mapping[idx_prediction]
+    
+    # This function is where all model predictions come together, the most popular prediction wins
+    def model_jury_ruling(*argv):
+        all_predictions = []
+        for arg in argv:
+            all_predictions.append(arg)
+        
+        hash = {}
+        
+        for prediction in all_predictions:
+            if prediction not in hash:
+                hash[prediction] = 1
+            else:
+                hash[prediction] += 1
+            
+        print(hash)
+        
+        # If all models do not have a unanimous vote, majority rules
+        # Note: If there is a tie, the first item of the tie that is added gets priority over rest of the items
+        return max_(hash, key=hash.get)
 
+
+    # The "model jury" 
+    model_1 = keras.models.load_model("handwriting/utils/models/model_1.h5")
+    model_2 = keras.models.load_model("handwriting/utils/models/model_2.h5")
+    model_3 = keras.models.load_model("handwriting/utils/models/model_3.h5")
+    model_4 = keras.models.load_model("handwriting/utils/models/model_4.h5")
+    model_5 = keras.models.load_model("handwriting/utils/models/model_5.h5")
+
+    # Saving the image to a predetermined filepath
+    image_request = request.data['image'].file
+    im = Image.open(image_request)
+    # im.show()
+    filepath = 'static/handwritingrecognition/user_image.png'
+    im.save(filepath)
+
+    # The "answer key"
+    # If a lowercase letter is not found in the string, that means the only difference in casing is the size
+    class_mapping = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt'
 
     # Identifying the what case uniformed-cased letters should be
     # Example: when a c should be a C
@@ -90,41 +121,48 @@ def data_return(request):
     LOWER_CASE = 200
 
     # The below letters are special letters
-    # not only are their lowercase counterparts the same, they can also be the same height
-    # these characters need special params to identify upper and lowercase
+    # Not only are their lowercase counterparts the same, they can also be the same height
+    # These characters need special params to identify upper and lowercase
     tall_uniform_lc_letters = 'klpy'
     TALL_UNIFORM_LC = 280
 
+    # Prepare the image
     final_images, space_location, char_img_heights = prepare(filepath)
 
-    # For the case where nothing is drawin
+    # For the case where nothing is drawing
     if final_images == False and space_location == False and char_img_heights == False:
         return HttpResponse('Please draw something!')
 
+    # Iterate through the images
+    # All 5 models will make a prediction at each image, and the majority rules
     final_prediction = []
     for idx, img in enumerate(final_images):
-        prediction = model.predict(img)
 
-        idx_prediction = np.argmax(prediction[0])
-        char_prediction = class_mapping[idx_prediction]
+        char_prediction_1 = make_prediction(model_1, img)
+        char_prediction_2 = make_prediction(model_2, img)
+        char_prediction_3 = make_prediction(model_3, img)
+        char_prediction_4 = make_prediction(model_4, img)
+        char_prediction_5 = make_prediction(model_5, img)
 
-        # Convert letter to lowercase if it is relatively small
-        if char_prediction.isnumeric() == False and char_prediction.lower() not in class_mapping:
-            if char_prediction.lower() in tall_uniform_lc_letters:
+        # print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
+
+        # The final prediction
+        final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
+
+        # Convert letter to lowercase if the final prediction is a character that is drawn small, and is not found in class_mapping
+        if final_char_prediction.isnumeric() == False and final_char_prediction.lower() not in class_mapping:
+            if final_char_prediction.lower() in tall_uniform_lc_letters:
                 if char_img_heights[idx] < TALL_UNIFORM_LC:
-                    char_prediction = char_prediction.lower()
+                    final_char_prediction = final_char_prediction.lower()
             elif char_img_heights[idx] < LOWER_CASE:
-                char_prediction = char_prediction.lower()
+                final_char_prediction = final_char_prediction.lower()
         
-        # Typically, "zeroes" (0) are fairly large, we would typically rather have "o" instead if a user makes them small
-        if char_prediction == '0' and char_img_heights[idx] < LOWER_CASE:
-            char_prediction = 'o'
+        # Typically, "zeroes" (0) are fairly large, we would typically rather have "o" instead if a 0 if a user makes them small
+        if final_char_prediction == '0' and char_img_heights[idx] < LOWER_CASE:
+            final_char_prediction = 'o'
 
-        # create an "i vs l" if statement if needed
-        # Try to make a better model first
-
-        final_prediction.append(char_prediction)
-        # print('we predict the answer is:', char_prediction)
+        final_prediction.append(final_char_prediction)
+        # print('we predict the answer is:', final_char_prediction)
         if idx in space_location:
             final_prediction.append(' ')
 
