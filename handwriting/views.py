@@ -139,15 +139,18 @@ def data_return(request):
     for idx, img in enumerate(final_images):
 
         char_prediction_1 = make_prediction(model_1, img)
-        char_prediction_2 = make_prediction(model_2, img)
-        char_prediction_3 = make_prediction(model_3, img)
-        char_prediction_4 = make_prediction(model_4, img)
+        # char_prediction_2 = make_prediction(model_2, img)
+        # char_prediction_3 = make_prediction(model_3, img)
+        # char_prediction_4 = make_prediction(model_4, img)
         # char_prediction_5 = make_prediction(model_5, img)
 
         # print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
 
         # The final prediction
-        final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
+        # final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
+
+        # one model
+        final_char_prediction = model_jury_ruling(char_prediction_1)
 
         # Convert letter to lowercase if the final prediction is a character that is drawn small, and is not found in class_mapping
         if final_char_prediction.isnumeric() == False and final_char_prediction.lower() not in class_mapping:
