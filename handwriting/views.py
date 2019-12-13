@@ -99,10 +99,10 @@ def data_return(request):
 
     # The "model jury" 
     model_1 = keras.models.load_model("handwriting/utils/models/model_1.h5")
-    model_2 = keras.models.load_model("handwriting/utils/models/model_2.h5")
-    model_3 = keras.models.load_model("handwriting/utils/models/model_3.h5")
-    model_4 = keras.models.load_model("handwriting/utils/models/model_4.h5")
-    model_5 = keras.models.load_model("handwriting/utils/models/model_5.h5")
+    # model_2 = keras.models.load_model("handwriting/utils/models/model_2.h5")
+    # model_3 = keras.models.load_model("handwriting/utils/models/model_3.h5")
+    # model_4 = keras.models.load_model("handwriting/utils/models/model_4.h5")
+    # model_5 = keras.models.load_model("handwriting/utils/models/model_5.h5")
 
     # Saving the image to a predetermined filepath
     image_request = request.data['image'].file
