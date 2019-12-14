@@ -21,7 +21,8 @@ class Canvas extends Component {
 			minLength: 300,
 			maxLength: 2000,
 			drawings: [],
-			predictionProgress: ''
+			predictionProgress: '',
+			predBtnCountdown: 0
 		};
 		this.sketch = this.sketch.bind(this);
 		this.fileUploadHandler = this.fileUploadHandler.bind(this);
@@ -31,7 +32,8 @@ class Canvas extends Component {
 	async fileUploadHandler(img) {
 
 		this.setState({
-			predictionProgress: 'Your handwriting is being predicted, please wait...'
+			predictionProgress: 'Your handwriting is being predicted, please wait...',
+			predBtnCountdown: ''
 		})
 
 		function dataURItoBlob(dataURI) {
@@ -71,8 +73,41 @@ class Canvas extends Component {
 
 		this.setState({
 			prediction: response.data,
-			predictionProgress: ''
+			predictionProgress: '',
 		});
+
+		const secCountdown = function () {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve()
+				}, 1000)
+			})
+		}
+
+		async function init() {
+			try {
+				await secCountdown()
+			}
+			catch (err) {
+				console.log('error: ', err)
+			}
+		}
+
+		let time = 5
+
+		this.setState({
+			predBtnCountdown: time
+		})
+
+		do {
+			await init()
+			time--
+			this.setState({
+				predBtnCountdown: time
+			})
+			
+		} while(time > 0)
+		
 	}
 
 	// sketch function
@@ -197,7 +232,7 @@ class Canvas extends Component {
 			const valuePX = e.target.value
 			const width = Number(valuePX.slice(0, valuePX.length - 2))
 			console.log(width)
-  
+
 			localStorage.setItem('width', width);
 			console.log('canvasLength', this.state.canvasLength)
 			window.location.reload();
@@ -264,7 +299,9 @@ class Canvas extends Component {
 		});
 
 		const defaultSize = `${this.state.canvasLength}px`
-		const disablePredBtn = this.state.predictionProgress ? true: false
+
+		console.log(this.state.predBtnCountdown)
+		const disablePredBtn = this.state.predBtnCountdown === 0 ? false : true
 
 		return (
 			<div className="canvas">
@@ -301,7 +338,7 @@ class Canvas extends Component {
 				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
-				
+
 				<button
 					className="btn waves-effect waves-light blue darken-1 submit-prediction"
 					type="submit"
@@ -314,12 +351,12 @@ class Canvas extends Component {
 					<div className="waiting-for-prediction">
 						<h5>{this.state.predictionProgress}</h5>
 						<div className="progress">
-      						<div className="indeterminate blue darken-1"></div>
-  						</div>
+							<div className="indeterminate blue darken-1"></div>
+						</div>
 					</div>
 				) : (
-					<h5 className= "prediction-result">Prediction: {this.state.prediction}</h5>
-				)}	
+						<h5 className="prediction-result">Prediction: {this.state.prediction}</h5>
+					)}
 			</div>
 		);
 	}

@@ -1,3 +1,8 @@
+div.instructions-component{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .Collapsible {
     width: 350px;
     background-color: white; 

@@ -26,7 +26,7 @@ class Header extends Component {
     render() {
         return (
             <div className="instructions-component">
-                <td className="collapsible-items">
+            
                     <Collapsible
                         trigger="How To Use This Application"
                         transitionTime={50}
@@ -93,7 +93,6 @@ class Header extends Component {
                             <p>This app is capable of predicting some sloppy handwriting. However, if you are aiming for a perfect prediction: write neatly and slowly.</p>
                         </div>
                     </Collapsible>
-                </td>
             </div>
         )
     }
