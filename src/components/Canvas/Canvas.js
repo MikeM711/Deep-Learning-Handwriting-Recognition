@@ -264,6 +264,7 @@ class Canvas extends Component {
 		});
 
 		const defaultSize = `${this.state.canvasLength}px`
+		const disablePredBtn = this.state.predictionProgress ? true: false
 
 		return (
 			<div className="canvas">
@@ -300,11 +301,13 @@ class Canvas extends Component {
 				<div className="p5-canvas">
 					<P5Wrapper className="P5Wrapper" sketch={this.sketch} />
 				</div>
+				
 				<button
 					className="btn waves-effect waves-light blue darken-1 submit-prediction"
 					type="submit"
 					name="action"
 					onClick={this.handleSubmitPrediction}
+					disabled={disablePredBtn}
 				>Predict</button>
 
 				{this.state.predictionProgress ? (
