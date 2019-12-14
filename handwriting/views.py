@@ -102,7 +102,7 @@ def data_return(request):
     model_2 = keras.models.load_model("handwriting/utils/models/model_2.h5")
     model_3 = keras.models.load_model("handwriting/utils/models/model_3.h5")
     model_4 = keras.models.load_model("handwriting/utils/models/model_4.h5")
-    model_5 = keras.models.load_model("handwriting/utils/models/model_5.h5")
+    # model_5 = keras.models.load_model("handwriting/utils/models/model_5.h5")
 
     # Saving the image to a predetermined filepath
     image_request = request.data['image'].file
@@ -142,9 +142,10 @@ def data_return(request):
         char_prediction_2 = make_prediction(model_2, img)
         char_prediction_3 = make_prediction(model_3, img)
         char_prediction_4 = make_prediction(model_4, img)
-        char_prediction_5 = make_prediction(model_5, img)
+        # char_prediction_5 = make_prediction(model_5, img)
 
-        print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
+        # print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
+        print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
 
         # model notes
         # 2 is really bad at S - do not use
@@ -153,7 +154,7 @@ def data_return(request):
         # 5 is picking 2 for "1" frequently - do not use
         # The final prediction
         # model 3 will be in front, then 4, 1
-        final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
+        final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
 
         # one model
         # final_char_prediction = model_jury_ruling(char_prediction_1)
