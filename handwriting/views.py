@@ -148,6 +148,7 @@ def data_return(request):
         print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
 
         # model notes
+        
         # 2 is really bad at S - do not use
         # 3 is good for "1" - save
         # choose # 4 - save
