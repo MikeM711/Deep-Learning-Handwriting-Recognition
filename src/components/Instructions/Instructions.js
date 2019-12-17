@@ -90,7 +90,7 @@ class Header extends Component {
                             <img className="spaceEx" src={spaceEx} alt=""></img>
                             <p><b>Result:</b> The added space will give us the prediction "Hey You" instead of "HeyYou".</p>
                             <h5><u>4. Write neatly</u></h5>
-                            <p>This app is capable of predicting some sloppy handwriting. However, if you are aiming for a perfect prediction: write neatly and slowly.</p>
+                            <p>This app is capable of predicting some messy handwriting. However, if you are aiming for a perfect prediction: write neatly and slowly.</p>
                         </div>
                     </Collapsible>
             </div>

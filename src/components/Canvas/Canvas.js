@@ -33,7 +33,6 @@ class Canvas extends Component {
 
 		this.setState({
 			predictionProgress: 'Your handwriting is being predicted, please wait...',
-			predBtnCountdown: ''
 		})
 
 		function dataURItoBlob(dataURI) {
@@ -115,7 +114,6 @@ class Canvas extends Component {
 		var canvas;
 		var drawings = this.state.drawings;
 
-		// localStorage.setItem('drawings', [])
 		var drawingStorage = localStorage.getItem('drawings')
 		if (drawingStorage !== null && drawingStorage.length !== 0) {
 			drawingStorage = JSON.parse(localStorage.getItem('drawings'))
@@ -300,8 +298,10 @@ class Canvas extends Component {
 
 		const defaultSize = `${this.state.canvasLength}px`
 
-		console.log(this.state.predBtnCountdown)
-		const disablePredBtn = this.state.predBtnCountdown === 0 ? false : true
+		const disablePredBtn = this.state.predictionProgress === '' 
+			&& this.state.predBtnCountdown === 0 ? false : true
+
+		const predCountdown = this.state.predBtnCountdown === 0 ? '' : `: ${this.state.predBtnCountdown}`
 
 		return (
 			<div className="canvas">
@@ -345,7 +345,7 @@ class Canvas extends Component {
 					name="action"
 					onClick={this.handleSubmitPrediction}
 					disabled={disablePredBtn}
-				>Predict</button>
+				>Predict{predCountdown}</button>
 
 				{this.state.predictionProgress ? (
 					<div className="waiting-for-prediction">
