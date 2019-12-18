@@ -55,12 +55,16 @@ def data_return(request):
 
         char_img_converted_to_in_sample = []
         char_img_heights = []
+        char_img_widths = [] # Helps us differentiate between "O" and "0" if needed. 
+        # I currently have the decision for this commented out below
+        # As I am having second-thoughts on manipulating the neural net's predictions too much
         for char_img in array_of_chars:
 
             # trim off all excess pixels and center the char_img up
             char_img = center_image(char_img)
 
             char_img_heights.append(len(char_img))
+            char_img_widths.append(len(char_img[0]))
 
             # we will now begin padding
             char_img = pad_image(char_img)
@@ -76,7 +80,7 @@ def data_return(request):
 
             char_img = char_img.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
             char_img_converted_to_in_sample.append(char_img)
-        return char_img_converted_to_in_sample, space_location, char_img_heights
+        return char_img_converted_to_in_sample, space_location, char_img_heights, char_img_widths
 
     # Function takes in a model and img and outputs a character prediction
     def make_prediction(model, img):
@@ -105,9 +109,7 @@ def data_return(request):
         return max_(hash, key=hash.get)
 
 
-    
-
-    # Saving the image to a predetermined filepath
+    # Save the image to a predetermined filepath
     image_request = request.data['image'].file
     im = Image.open(image_request)
     # im.show()
@@ -130,7 +132,7 @@ def data_return(request):
     TALL_UNIFORM_LC = 280
 
     # Prepare the image
-    final_images, space_location, char_img_heights = prepare(filepath)
+    final_images, space_location, char_img_heights, char_img_widths = prepare(filepath)
 
     # For the case where nothing is drawing
     if final_images == False and space_location == False and char_img_heights == False:
@@ -148,20 +150,23 @@ def data_return(request):
         char_prediction_5 = make_prediction(model_5, img)
 
         print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
-        # print('\n',char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4)
 
-        # model notes
-
-        # 2 is really bad at S - do not use
-        # 3 is good for "1" - save
-        # choose # 4 - save
-        # 5 is picking 2 for "1" frequently - do not use
-        # The final prediction
-        # model 3 will be in front, then 4, 1
+        # Combined prediction
         final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
 
-        # one model
-        # final_char_prediction = model_jury_ruling(char_prediction_1)
+        # Differentiate between a "0" and a "O"
+        # Problem: "O" and "0" have incredibly similar-looking samples, every model has trouble with these 2 classifications
+        # Solution: The ratio of height and width of all images will determine what is a "0" (narrow) or a "O" (fat)
+        # if final_char_prediction == "0" or final_char_prediction == "O":
+
+        #     HEIGHT_WIDTH_RATIO = 1.2 # upperbound is 0, lowerbound is O
+        #     img_height_width_ratio = char_img_heights[idx] / char_img_widths[idx]
+        #     # print(img_height_width_ratio)
+
+        #     if img_height_width_ratio < HEIGHT_WIDTH_RATIO:
+        #         final_char_prediction = "O"
+        #     else:
+        #         final_char_prediction = "0"
 
         # Convert letter to lowercase if the final prediction is a character that is drawn small, and is not found in class_mapping
         if final_char_prediction.isnumeric() == False and final_char_prediction.lower() not in class_mapping:
@@ -170,11 +175,11 @@ def data_return(request):
                     final_char_prediction = final_char_prediction.lower()
             elif char_img_heights[idx] < LOWER_CASE:
                 final_char_prediction = final_char_prediction.lower()
-        
+
         # Typically, "zeroes" (0) are fairly large, we would typically rather have "o" instead if a 0 if a user makes them small
         if final_char_prediction == '0' and char_img_heights[idx] < LOWER_CASE:
             final_char_prediction = 'o'
-
+            
         final_prediction.append(final_char_prediction)
         # print('we predict the answer is:', final_char_prediction)
         if idx in space_location:

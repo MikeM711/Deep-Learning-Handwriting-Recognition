@@ -11,6 +11,7 @@ import horiIntf1 from '../../images/tutorial/horizontal-interference-1.png';
 import horiIntf2 from '../../images/tutorial/horizontal-interference-2.png';
 import horiIntf3 from '../../images/tutorial/horizontal-interference-3.png';
 import caseEx from '../../images/tutorial/casing-example.png';
+import caseCaveat from '../../images/tutorial/casing-caveat.png';
 import spaceEx from '../../images/tutorial/spacing-example.png'; // not talking about the company
 
 import './Instructions.css';
@@ -85,6 +86,10 @@ class Header extends Component {
                             <p className="center"><i>"What determines a 'c' from a 'C'?"</i></p>
                             <p>For letters where the only difference in casing is the size - write relatively large for uppercase, and relatively small for lowercase. </p>
                             <img className="caseEx" src={caseEx} alt=""></img>
+                            <p><b>Casing Caveat:</b></p>
+                            <p>Due to the constrains of the chosen dataset, the lowercase "i" samples rely off of image height to determine casing. The first "i" below would return "i" and the second "i" would return capital "I".</p>
+                            <img className="caseCaveat" src={caseCaveat} alt=""></img>
+                            <p>At the risk of hard-coding the neural net's prediction too much, this result has been left alone.</p>
                             <h5><u>3. Add spaces in your prediction</u></h5>
                             <p>For some flair, you can give yourself a large horizontal space to indicate an actual text-space in your prediction.</p>
                             <img className="spaceEx" src={spaceEx} alt=""></img>
