@@ -6,6 +6,11 @@ The models were trained on the following characters: `0123456789ABCDEFGHIJKLMNOP
 
 To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `klpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
 
+## Demo
+
+![demo](https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/hey-there-prediction.gif)
+
+
 ## Features
 - The following characters can be predicted from handwriting: `0-9, a-z, A-Z` (62 characters)
 - Characters can be placed anywhere on the canvas, providing that the character has some horizontal space between other characters
@@ -17,15 +22,9 @@ Website: [Live Heroku App](https://handwriting-recognition-py-js.herokuapp.com/)
 
 <img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png"/>
 
-## The Neural Network Models
+## The Neural Network Models: Jupyter Notebook
 
-The [Jupyter Notebook](https://github.com/MikeM711/Deep-Learning-Handwriting-Recognition/blob/master/data/Jupyter%20Notebook/Handwriting%20Recognition.ipynb) inside this repo describes how the neural network models were created for this web application
-
-Models: `model_1.h5`, `model_2.h5` and `model_3.h5` 
-- Architecture: 2 convolutional layers, 2 dense layers, 128 neurons, 0.2 dropout, ran at 10 epochs
-
-Models: `model_4.h5` and `model_5.h5`
-- Architecture: 2 convolutional layers, 2 dense layers, 64 neurons, 0.2 dropout, ran at 10 epochs
+The [Jupyter Notebook](https://github.com/MikeM711/Deep-Learning-Handwriting-Recognition/blob/master/data/Jupyter%20Notebook/Handwriting%20Recognition.ipynb) inside this repo describes how the neural network models were created for this web application. It goes step by step: from acquiring the outside dataset for learning to Heroku deployment.
 
 ## How the Incoming Data is Fed Into The Models
 1. Example: A user writes and submits the handwriting, "Hey you", on the client.
@@ -41,7 +40,9 @@ Models: `model_4.h5` and `model_5.h5`
 9. Each image is normalized. Each image is converted to a numpy array, reshaped, and the pixel values range from 0 to 1 instead of 0 to 255.
 10. We loop through all of these images - each model makes a prediction at each image. The most popular prediction between the models will be added to the final character result, `final_prediction`.
     * Each model prediction for each image will be an output of a number between `0` through `46` which corresponds to the index of the 47 characters that each model was trained on. (Ex: an output of `17` corresponds to `H` in the mapping).
-    * When the final prediction is mapped and if that prediction is alphabetical, we make sure that the lowercase compliment is found inside of the mapping. If it is not, that means we have a letter where the lower and uppercase are similar, the only difference is the size. We need to make a decision on the output casing based on the size of the image, which we get from `char_img_heights`. This decision will be performed on the images "y", "y", "o" and "u". The letter "y" gets a special constraint because its height is larger than the average lowercase letter.
+    * The prediction of each model is mapped and compared with the model group.
+    * The most popular prediction between the models in the group will be the final prediction.
+    * If the final prediction between the models is alphabetical, we make sure that the lowercase compliment is found inside of the mapping. If it is not, that means we have a letter where the lower and uppercase are similar, the only difference is the size. We need to make a decision on the output casing based on the size of the image, which we get from `char_img_heights`. This decision will be performed on the images "y", "y", "o" and "u". The letter "y" gets a special constraint because its height is larger than the average lowercase letter.
     * While iterating, if the number of loop iterations equals a number inside `space_location`, a `" "` is appended to the final result. In this example, `space_location` will have `[2]` signaling that there's a space after "y" - which will give us a `"Hey "` at the end of the first "y" iteration.
 11. Django responds with `final_prediction` to React with `"Hey you"`, and React displays the result on the client.
 
@@ -59,7 +60,7 @@ The current prediction manipulations I use are:
 
 ### If Manipulations Are Your Thing
 
-I left in commented code where, if either characters `0` or `O` were predicted, the final prediction is dependent on the ratio of height/width of the character image. If a user writes a fat circle, the result will be a capital or lowercase "O"; if a user writes a narrow circle, the result will be the number "0".
+I left in commented code where, if either characters `0` or `O` were predicted, the final prediction is dependent on the ratio of height/width of the character image. If a user writes a fat circle, the result will be a capital or lowercase `O`; if a user writes a narrow circle, the result will be the number `0`.
 
 For determining "i" vs "I" (another issue with the EMNIST dataset), one could cook up some code during the `cv` portion and determine if a character has a hovering dot. One could do a better height estimate for casing by taking the total character height and negating the space between the dot and the base of the "i". 
 
