@@ -6,6 +6,10 @@ The models were trained on the following characters: `0123456789ABCDEFGHIJKLMNOP
 
 To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `klpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
 
+## The Neural Network Models: Jupyter Notebook
+
+The [Jupyter Notebook](https://github.com/MikeM711/Deep-Learning-Handwriting-Recognition/blob/master/data/Jupyter%20Notebook/Handwriting%20Recognition.ipynb) inside this repo describes how the neural network models were created for this web application. It goes step by step: from acquiring the outside dataset for learning to Heroku deployment.
+
 ## Demo
 
 ![demo](https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/hey-there-prediction.gif)
@@ -21,10 +25,6 @@ To account for these "left out" lowercase letters that look like their uppercase
 Website: [Live Heroku App](https://handwriting-recognition-py-js.herokuapp.com/)
 
 <img width=600px src="https://raw.githubusercontent.com/MikeM711/Deep-Learning-Handwriting-Recognition/master/data/screenshot.png"/>
-
-## The Neural Network Models: Jupyter Notebook
-
-The [Jupyter Notebook](https://github.com/MikeM711/Deep-Learning-Handwriting-Recognition/blob/master/data/Jupyter%20Notebook/Handwriting%20Recognition.ipynb) inside this repo describes how the neural network models were created for this web application. It goes step by step: from acquiring the outside dataset for learning to Heroku deployment.
 
 ## How the Incoming Data is Fed Into The Models
 1. Example: A user writes and submits the handwriting, "Hey you", on the client.
