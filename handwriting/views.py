@@ -13,7 +13,6 @@ from rest_framework.decorators import api_view
 from handwriting.utils.center_image import center_image
 from handwriting.utils.pad_image import pad_image
 from handwriting.utils.cut_pictures import cut_pictures
-# from handwriting.utils.predictions import predictions
 
 # The "model jury" 
 model_1 = keras.models.load_model("handwriting/utils/models/model_1.h5")
@@ -46,11 +45,11 @@ def data_return(request):
         if col == len(mod_array[0]) - 1 and row == len(mod_array) - 1:
             return False, False, False
 
-        # trim off all excess pixels and center it up
+        # Trim off all excess pixels and center it up
         mod_array = center_image(mod_array)
 
-        # here is where we cut the images up
-        #### We will find where letters start and end and where large spaces are found
+        # Here is where we cut the images up
+        # We will find where letters start and end and where large spaces are found
         array_of_chars, space_location = cut_pictures(mod_array)
 
         char_img_converted_to_in_sample = []
@@ -58,6 +57,7 @@ def data_return(request):
         char_img_widths = [] # Helps us differentiate between "O" and "0" if needed. 
         # I currently have the decision for this commented out below
         # As I am having second-thoughts on manipulating the neural net's predictions too much
+
         for char_img in array_of_chars:
 
             # trim off all excess pixels and center the char_img up
@@ -154,7 +154,8 @@ def data_return(request):
         # Combined prediction
         final_char_prediction = model_jury_ruling(char_prediction_1, char_prediction_2, char_prediction_3, char_prediction_4, char_prediction_5)
 
-        # Differentiate between a "0" and a "O"
+
+        # Differentiate between a "0" and a "O" - commented out for now
         # Problem: "O" and "0" have incredibly similar-looking samples, every model has trouble with these 2 classifications
         # Solution: The ratio of height and width of all images will determine what is a "0" (narrow) or a "O" (fat)
         # if final_char_prediction == "0" or final_char_prediction == "O":
@@ -167,6 +168,7 @@ def data_return(request):
         #         final_char_prediction = "O"
         #     else:
         #         final_char_prediction = "0"
+
 
         # Convert letter to lowercase if the final prediction is a character that is drawn small, and is not found in class_mapping
         if final_char_prediction.isnumeric() == False and final_char_prediction.lower() not in class_mapping:
