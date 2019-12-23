@@ -43,7 +43,7 @@ def data_return(request):
 
         print(row, col)
         if col == len(mod_array[0]) - 1 and row == len(mod_array) - 1:
-            return False, False, False
+            return False, False, False, False
 
         # Trim off all excess pixels and center it up
         mod_array = center_image(mod_array)
