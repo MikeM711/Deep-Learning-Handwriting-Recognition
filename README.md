@@ -1,10 +1,12 @@
 # Deep Learning Handwriting Recognition
 
-A full stack React/JavaScript and Python/Django web application that recognizes handwriting and converts it into text, by incorporating multiple machine learning models that were pre-trained using the [EMNIST Dataset](https://www.kaggle.com/crawford/emnist) on Kaggle. These neural network models recognize all digits, all uppercase letters, and all lowercase letters that are visibly different from their uppercase counterparts. 
+A full stack React/JavaScript and Python/Django web application that recognizes handwriting and converts it into text, by incorporating multiple machine learning models that were pre-trained using the [EMNIST Dataset](https://www.kaggle.com/crawford/emnist) on Kaggle. These neural network models recognize all digits, all uppercase letters, and all lowercase letters that are visibly different from their uppercase counterparts.
 
 The models were trained on the following characters: `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt`
 
 To account for these "left out" lowercase letters that look like their uppercase complement, the final prediction for these characters are converted into lowercase if the character is drawn less than half the height of the canvas. For "tall" versions of these lowercase characters, `klpy`, these characters will be converted into lowercase if their heights are less than 70% of the canvas height.
+
+The best independent model used inside of this application is more accurate than the rest of the models created by Kaggle users who use Tensorflow/Keras. To extend onto this - when this model, a similar model, and 3 other sub-optimal models are combined (due to Heroku limitations), accuracy increases another `0.5%`.
 
 ## The Neural Network Models: Jupyter Notebook
 
