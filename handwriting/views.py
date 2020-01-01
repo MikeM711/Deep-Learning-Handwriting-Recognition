@@ -123,13 +123,13 @@ def data_return(request):
     # Identifying the what case uniformed-cased letters should be
     # Example: when a c should be a C
     # We will say that half the canvas dictates the casing
-    LOWER_CASE = 200
+    LOWER_CASE = im.height * .50
 
     # The below letters are special letters
     # Not only are their lowercase counterparts the same, they can also be the same height
     # These characters need special params to identify upper and lowercase
     tall_uniform_lc_letters = 'klpy'
-    TALL_UNIFORM_LC = 280
+    TALL_UNIFORM_LC = im.height * .70
 
     # Prepare the image
     final_images, space_location, char_img_heights, char_img_widths = prepare(filepath)
